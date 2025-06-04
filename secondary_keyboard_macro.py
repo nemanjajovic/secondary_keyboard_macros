@@ -6,17 +6,27 @@ import pyautogui
 import pygetwindow
 import pyperclip
 
-# pyautogui.mouseInfo()
+from clipboard_modifier import modify_copied_content
+
+# Target line to modify in clipboard
+target_variable = "local keyboardIdentifier"
+
+
+# modify_copied_content takes this as a second parameter
+class KeyboardSelection:
+    work_keyboard = "'2FE3714A'"
+    home_keyboard = "'14C79465'"
 
 
 def start_lua():
     with open("./luascript.lua", "r") as file:
         pyperclip.copy(file.read())
-        os.startfile("C://Users/User/Desktop/luamacros/LuaMacros.exe")
-        time.sleep(1.5)
-        pyautogui.hotkey("ctrl", "v")
-        pyautogui.click(473, 169)
-        pygetwindow.getActiveWindow().minimize()
+    modify_copied_content(target_variable, KeyboardSelection.home_keyboard)
+    os.startfile("C://Users/User/Desktop/luamacros/LuaMacros.exe")
+    time.sleep(1.5)
+    pyautogui.hotkey("ctrl", "v")
+    pyautogui.click(473, 169)
+    pygetwindow.getActiveWindow().minimize()
 
 
 def close_program():
