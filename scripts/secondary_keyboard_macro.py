@@ -34,6 +34,9 @@ def start_lua():
 
 
 def close_program():
+    open(
+        f"{path}/keypressed.txt", "w"
+    ).close()  # clear the contents of keypressed.txt file before terminating the script
     os.system("taskkill /f /im luamacros.exe")
     print("Closing the Python script...")
     time.sleep(1)
