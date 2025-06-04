@@ -12,13 +12,18 @@ from PIL import Image
 
 # Change this depending if im using this at home or at work
 # Home: "C://Users/User/Desktop/luamacros"
-# Work: ""
-path = "C://Users/User/Desktop/luamacros"
+# Work: "C://Users/nj250196/OneDrive - NCR Corporation/Desktop/secondary_keyboard_macros"
+path = "C://Users/nj250196/OneDrive - NCR Corporation/Desktop/secondary_keyboard_macros"
 
 # Also change this
 # Home: "'14C79465'"
 # Work: "'2FE3714A'"
-keyboard_selector = "'14C79465'"
+keyboard_selector = "'2FE3714A'"
+
+# Coordinates are not the same as at work environment
+# Home: 473, 169
+# Work: 593, 211
+cord_x, cord_y = 593, 211
 
 
 def start_lua():
@@ -29,7 +34,7 @@ def start_lua():
     os.startfile(f"{path}/LuaMacros.exe")
     time.sleep(2)
     pyautogui.hotkey("ctrl", "v")
-    pyautogui.click(473, 169)
+    pyautogui.click(cord_x, cord_y)
     pygetwindow.getActiveWindow().minimize()
 
 
