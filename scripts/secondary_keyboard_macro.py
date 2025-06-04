@@ -7,26 +7,26 @@ import pyautogui
 import pygetwindow
 import pyperclip
 import pystray
-from PIL import Image, ImageDraw
-
 from clipboard_modifier import modify_copied_content
+from PIL import Image
 
-# Target line to modify in clipboard
-target_variable = "local keyboardIdentifier"
+# Change this depending if im using this at home or at work
+# Home: "C://Users/User/Desktop/luamacros"
+# Work: ""
+path = "C://Users/User/Desktop/luamacros"
 
-
-# Keyboard selection will be added later to the tkinter GUI so we can select the keyboard we want
-class KeyboardSelection:
-    work_keyboard = "'2FE3714A'"
-    home_keyboard = "'14C79465'"
+# Also change this
+# Home: "'14C79465'"
+# Work: "'2FE3714A'"
+keyboard_selector = "'14C79465'"
 
 
 def start_lua():
-    with open("./luascript.lua", "r") as file:
+    with open(f"{path}/luascript.lua", "r") as file:
         pyperclip.copy(file.read())
     # Change KeyboardSelection to either home_keyboard or work_keyboard
-    modify_copied_content(target_variable, KeyboardSelection.home_keyboard)
-    os.startfile("C://Users/User/Desktop/luamacros/LuaMacros.exe")
+    modify_copied_content("local keyboardIdentifier", keyboard_selector)
+    os.startfile(f"{path}/LuaMacros.exe")
     time.sleep(2)
     pyautogui.hotkey("ctrl", "v")
     pyautogui.click(473, 169)
@@ -43,18 +43,16 @@ def close_program():
 
 start_lua()
 
-file_path = "C:\\Users\\User\\Desktop\\luamacros\\keypressed.txt"
-
 
 def read_file():
     try:
-        with open(file_path, "r") as file:
+        with open(f"{path}/keypressed.txt", "r") as file:
             content = file.read().strip()
             if content == "k":
                 close_program()  # I will not keep this as a macro since I have a tray icon to kill this program, leaving for testing purposes for now
             elif content == "b":
                 os.startfile(
-                    "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Brave.lnk"
+                    "C://ProgramData/Microsoft/Windows/Start Menu/Programs/Brave.lnk"
                 )
             else:
                 print(f"Keyboard 2: {content}")
@@ -73,7 +71,7 @@ print("Listening for macro key press...")
 
 
 def create_icon():
-    icon_image = Image.open("./res/icon.png")
+    icon_image = Image.open(f"{path}/res/icon.png")
     menu = (pystray.MenuItem("Exit", close_program),)
     icon = pystray.Icon("LuaMacros", icon_image, "LuaMacros Manager", menu)
     icon.run()
