@@ -20,6 +20,7 @@ from config.configuration import (
     path,
 )
 from macro_functions import check_panda_svc
+from on_cursor_change import on_cursor_change
 from tray import run_tray_icon
 
 command_actions = {
@@ -87,12 +88,17 @@ def show_input_window():
         execute_command(command)
 
 
+# test function for on_cursor_change
+def click():
+    pyautogui.click()
+
+
 def read_macro_file():
     try:
         with open(f"{path}/keypressed.txt", "r") as f:
             key = f.read().strip()
         if key == "1":
-            execute_command(command="ip")
+            on_cursor_change(0.5, click)
         elif key == "up":
             # Check panda services
             check_panda_svc()
