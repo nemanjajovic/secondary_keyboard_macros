@@ -6,6 +6,11 @@
 clear() --clear the console from last run
 local keyboardIdentifier = '0000AAA'
 
+-- Work: 'C:\\Users\\nj250196\\OneDrive - NCR Corporation\\Desktop\\secondary_keyboard_macros\\keypressed.txt'
+-- Home: 'C:\\Users\\User\\Desktop\\luamacros\\keypressed.txt'
+
+local path = 'C:\\Users\\nj250196\\OneDrive - NCR Corporation\\Desktop\\secondary_keyboard_macros\\keypressed.txt'
+
 
 
 --You need to get the identifier code for the keyboard with name "MACROS"
@@ -33,7 +38,7 @@ lmc.minimizeToTray = true
 --Start Script
 sendToPython = function (key)
       --print('It was assigned string:    ' .. key)
-      local file = io.open("C:\\Users\\User\\Desktop\\luamacros\\keypressed.txt", "w") -- writing this string to a text file on disk is probably NOT the best method. Feel free to program something better!
+      local file = io.open(path, "w") -- writing this string to a text file on disk is probably NOT the best method. Feel free to program something better!
       --If you didn't put your Python scripts into C:/Users/User/Desktop/luamacros, Make sure to substitute the path that leads to your own "keypressed.txt" file, using the double backslashes.
 	  --print("we are inside the text file")
       file:write(key)
