@@ -21,7 +21,7 @@ from config.configuration import (
 )
 from macro_functions import check_panda_svc
 from on_cursor_change import on_cursor_change
-from testing import parts
+from read_output import read_output
 from tray import run_tray_icon
 
 command_actions = {
@@ -48,11 +48,19 @@ command_actions.update(
 def start_lua():
     with open(f"{path}/luascript.lua", "r") as f:
         pyperclip.copy(f.read())
-    modify_copied_content("local keyboardIdentifier", keyboard_selector)
+    # modify_copied_content("local keyboardIdentifier", keyboard_selector)
     os.startfile(f"{path}/LuaMacros.exe")
     time.sleep(2)
     pyautogui.hotkey("ctrl", "v")
+    pyautogui.click(cord_x, cord_y)
+    time.sleep(2)
     if keyboard_selector != "'0000AAA'":
+        os.system("taskkill /f /im luamacros.exe")
+        modify_copied_content("local keyboardIdentifier", read_output())
+        time.sleep(2)
+        os.startfile(f"{path}/LuaMacros.exe")
+        time.sleep(2)
+        pyautogui.hotkey("ctrl", "v")
         pyautogui.click(cord_x, cord_y)
         gw.getActiveWindow().minimize()
 
