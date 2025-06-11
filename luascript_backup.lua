@@ -4,13 +4,12 @@
 -- plug in your 2nd keyboard, load this script into LUAmacros, and press the triangle PLAY button.
 -- Then, press any key on that keyboard to assign logical name ('MACROS') to macro keyboard
 clear() --clear the console from last run
-local keyboardIdentifier = '2FE3714A'
+local keyboardIdentifier = '0000AAA'
 
 -- Work: 'C:\\Users\\nj250196\\OneDrive - NCR Corporation\\Desktop\\secondary_keyboard_macros\\keypressed.txt'
 -- Home: 'C:\\Users\\User\\Desktop\\luamacros\\keypressed.txt'
 
 local path = 'C:\\Users\\nj250196\\OneDrive - NCR Corporation\\Desktop\\secondary_keyboard_macros\\keypressed.txt'
-local outputFilePath = 'C:\\Users\\nj250196\\OneDrive - NCR Corporation\\Desktop\\secondary_keyboard_macros\\luaoutput.txt'
 
 
 
@@ -26,19 +25,10 @@ else lmc_device_set_name('MACROS', keyboardIdentifier);
 end
 --This lists connected keyboards
 dev = lmc_get_devices()
-
--- Need this output file so we could read it with python so that we can dinamically determine which keyboard is connected to the system
-local output = io.open(outputFilePath, "w")
 for key,value in pairs(dev) do
   print(key..':')
-  output:write(key..':')
-  for key2,value2 in pairs(value) do
-      print('  '..key2..' = '..value2)
-      output:write('  '..key2..' = '..value2)
-  end
+  for key2,value2 in pairs(value) do print('  '..key2..' = '..value2) end
 end
-output:flush()
-output:close()
 print('You need to get the identifier code for the keyboard with name "MACROS"')
 print('Then replace the first 0000AAA value in the code with it. This will prevent having to manually identify keyboard every time.')
 -- Hide window to tray to keep taskbar tidy
@@ -176,4 +166,3 @@ lmc_set_handler('MACROS', function(button, direction)
                 print('Not yet assigned: ' .. button)
 	end
 end)
-
