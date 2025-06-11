@@ -44,7 +44,7 @@ def read_output():
 def start_lua():
     with open(f"{path}/luascript.lua", "r") as f:
         pyperclip.copy(f.read())
-    # modify_copied_content("local keyboardIdentifier", keyboard_selector)
+    modify_copied_content("local keyboardIdentifier", keyboard_selector)
     os.startfile(f"{path}/LuaMacros.exe")
     time.sleep(2)
     pyautogui.hotkey("ctrl", "v")
