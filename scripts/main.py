@@ -11,7 +11,7 @@ from commands.commands_paths_positions import path_commands, positions, shell_co
 from config.configuration import cmd_position, icon_path, path
 from macro_functions import check_panda_svc
 from on_cursor_change import on_cursor_change
-from read_output import start_lua
+from start_lua import start_lua
 from tray import run_tray_icon
 
 command_actions = {
