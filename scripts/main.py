@@ -9,7 +9,7 @@ import pyautogui
 import pygetwindow as gw
 from commands.commands_paths_positions import path_commands, positions, shell_commands
 from config.configuration import cmd_position, icon_path, path
-from macro_functions import check_panda_svc
+from macro_functions import check_panda_svc, epdr_installing
 from on_cursor_change import on_cursor_change
 from start_lua import start_lua
 from tray import run_tray_icon
@@ -81,6 +81,7 @@ KEY_ACTIONS = {
     "t": lambda: execute_command(command="temp"),
     "q": close_program,
     "s": lambda: print("ssss"),
+    "w": lambda: epdr_installing(),
 }
 
 
