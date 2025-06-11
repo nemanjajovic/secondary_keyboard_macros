@@ -21,6 +21,7 @@ from config.configuration import (
 )
 from macro_functions import check_panda_svc
 from on_cursor_change import on_cursor_change
+from testing import parts
 from tray import run_tray_icon
 
 command_actions = {
