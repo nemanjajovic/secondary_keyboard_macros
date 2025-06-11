@@ -2,11 +2,22 @@ import os
 import re
 import time
 
+import psutil
 import pyautogui
 import pygetwindow as gw
 import pyperclip
 from clipboard_modifier import modify_copied_content
 from config.configuration import cord_x, cord_y, keyboard_selector, path
+
+
+def wait_for_process(name, timeout=30):
+    start_time = time.time()
+    while time.time() - start_time < timeout:
+        for proc in psutil.process_iter(["name"]):
+            if proc.info["name"] == name:
+                return True
+        time.sleep(1)
+    return False
 
 
 # Reads and parses the Lua script output to extract the keyboard ID from the block labeled '0:'
@@ -45,32 +56,30 @@ def start_lua():
     # Read the contents of the Lua script and copy to clipboard
     with open(f"{path}/luascript.lua", "r") as f:
         pyperclip.copy(f.read())
-
     # Modify the clipboard content by inserting the initial keyboard selector value
     modify_copied_content("local keyboardIdentifier", keyboard_selector)
-
     # Launch LuaMacros application
     os.startfile(f"{path}/LuaMacros.exe")
-    time.sleep(2)
+
+    if wait_for_process("LuaMacros.exe"):
+        print("LuaMacros.exe loaded")
 
     # Paste the script and click on specified coordinates to run
     pyautogui.hotkey("ctrl", "v")
     pyautogui.click(cord_x, cord_y)
-    time.sleep(2)
-
     # If a different keyboard ID is detected, restart LuaMacros with the new ID
     if keyboard_selector != "'0000AAA'":
         os.system("taskkill /f /im luamacros.exe")  # Force close LuaMacros
         modify_copied_content(
             "local keyboardIdentifier", read_output()
         )  # Update clipboard with new keyboard ID
-        time.sleep(2)
-
         # Relaunch LuaMacros with updated script
         os.startfile(f"{path}/LuaMacros.exe")
-        time.sleep(2)
+
+        if wait_for_process("LuaMacros.exe"):
+            print("LuaMacros.exe loaded")
+
         pyautogui.hotkey("ctrl", "v")
         pyautogui.click(cord_x, cord_y)
-
         # Minimize the LuaMacros window to keep things clean
         gw.getActiveWindow().minimize()
