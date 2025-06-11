@@ -7,21 +7,11 @@ from tkinter import simpledialog
 import keyboard
 import pyautogui
 import pygetwindow as gw
-import pymsgbox
-import pyperclip
-from clipboard_modifier import modify_copied_content
 from commands.commands_paths_positions import path_commands, positions, shell_commands
-from config.configuration import (
-    cmd_position,
-    cord_x,
-    cord_y,
-    icon_path,
-    keyboard_selector,
-    path,
-)
+from config.configuration import cmd_position, icon_path, path
 from macro_functions import check_panda_svc
 from on_cursor_change import on_cursor_change
-from read_output import read_output
+from read_output import start_lua
 from tray import run_tray_icon
 
 command_actions = {
@@ -42,27 +32,6 @@ command_actions.update(
         ),
     }
 )
-
-
-# === FUNCTIONAL CORE ===
-def start_lua():
-    with open(f"{path}/luascript.lua", "r") as f:
-        pyperclip.copy(f.read())
-    # modify_copied_content("local keyboardIdentifier", keyboard_selector)
-    os.startfile(f"{path}/LuaMacros.exe")
-    time.sleep(2)
-    pyautogui.hotkey("ctrl", "v")
-    pyautogui.click(cord_x, cord_y)
-    time.sleep(2)
-    if keyboard_selector != "'0000AAA'":
-        os.system("taskkill /f /im luamacros.exe")
-        modify_copied_content("local keyboardIdentifier", read_output())
-        time.sleep(2)
-        os.startfile(f"{path}/LuaMacros.exe")
-        time.sleep(2)
-        pyautogui.hotkey("ctrl", "v")
-        pyautogui.click(cord_x, cord_y)
-        gw.getActiveWindow().minimize()
 
 
 def execute_command(command):
@@ -152,13 +121,10 @@ def close_program(*_):
 # === RUNTIME ===
 if __name__ == "__main__":
     start_lua()
-    pymsgbox.alert("Program started", "Alert")
-
     keyboard.on_press(on_f24)
     threading.Thread(target=ctrl_f_listener, daemon=True).start()
     threading.Thread(
         target=run_tray_icon(icon_path, close_program), daemon=True
     ).start()
-
     print("Listening for hotkeys...")
     keyboard.wait()  # Keeps script alive
