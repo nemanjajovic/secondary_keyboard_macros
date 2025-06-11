@@ -9,10 +9,9 @@ from clipboard_modifier import modify_copied_content
 from config.configuration import cord_x, cord_y, keyboard_selector, path
 
 
-# With this function we can read the output of luascript and determine what the keyboard ID is
-# Then we close luascript, modify the clipboard with the new value and open luascripts and paste and run
+# Reads and parses the Lua script output to extract the keyboard ID from the block labeled '0:'
 def read_output():
-    # Read the content of the file
+    # Open and read the contents of the output file
     with open("luaoutput.txt", "r") as f:
         content = f.read()
 
@@ -41,21 +40,37 @@ def read_output():
         print("Block starting with '0:' not found.")
 
 
+# Automates the LuaMacros workflow: sets up the script, injects the correct keyboard ID, and runs LuaMacros
 def start_lua():
+    # Read the contents of the Lua script and copy to clipboard
     with open(f"{path}/luascript.lua", "r") as f:
         pyperclip.copy(f.read())
+
+    # Modify the clipboard content by inserting the initial keyboard selector value
     modify_copied_content("local keyboardIdentifier", keyboard_selector)
+
+    # Launch LuaMacros application
     os.startfile(f"{path}/LuaMacros.exe")
     time.sleep(2)
+
+    # Paste the script and click on specified coordinates to run
     pyautogui.hotkey("ctrl", "v")
     pyautogui.click(cord_x, cord_y)
     time.sleep(2)
+
+    # If a different keyboard ID is detected, restart LuaMacros with the new ID
     if keyboard_selector != "'0000AAA'":
-        os.system("taskkill /f /im luamacros.exe")
-        modify_copied_content("local keyboardIdentifier", read_output())
+        os.system("taskkill /f /im luamacros.exe")  # Force close LuaMacros
+        modify_copied_content(
+            "local keyboardIdentifier", read_output()
+        )  # Update clipboard with new keyboard ID
         time.sleep(2)
+
+        # Relaunch LuaMacros with updated script
         os.startfile(f"{path}/LuaMacros.exe")
         time.sleep(2)
         pyautogui.hotkey("ctrl", "v")
         pyautogui.click(cord_x, cord_y)
+
+        # Minimize the LuaMacros window to keep things clean
         gw.getActiveWindow().minimize()
