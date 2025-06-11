@@ -16,22 +16,13 @@ from tray import run_tray_icon
 
 command_actions = {
     key: lambda first=pos[0], second=pos[1] if len(pos) > 1 else None: (
+        # If a second position exists, click both with a slight pause between
         (pyautogui.click(first), time.sleep(0.2), pyautogui.click(second))
         if second
-        else pyautogui.click(first)
+        else pyautogui.click(first)  # Otherwise, click the first position only
     )
     for key, pos in positions.items()
 }
-command_actions.update(
-    {
-        "cmd": lambda: pyautogui.click(cmd_position),
-        "del": lambda: (
-            os.remove("c:/users/nj250196/downloads/WatchGuard Agent.msi")
-            if os.path.exists("c:/users/nj250196/downloads/WatchGuard Agent.msi")
-            else print("File not found.")
-        ),
-    }
-)
 
 
 def execute_command(command):
@@ -71,6 +62,7 @@ def click():
     pyautogui.click()
 
 
+# === MAIN SECOND KEYBOARD MACRO FUNCTIONALITY ===
 def read_macro_file():
     try:
         with open(f"{path}/keypressed.txt", "r") as f:

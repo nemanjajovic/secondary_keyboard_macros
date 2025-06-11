@@ -1,3 +1,4 @@
+# Add upper toolbar positions in CMC
 positions = {
     "st": [(493, 114), (564, 144)],
     "fl": [(493, 114), (559, 172)],
@@ -7,6 +8,7 @@ positions = {
     "rl": [(1901, 582)],
 }
 
+# Add Paths which you want to navigate on host machine in CMC
 path_commands = {
     "lp": "%IBERDIR%/LANProxy/LanProxy",
     "temp": "c:\\temp",
@@ -17,6 +19,7 @@ path_commands = {
     "programfiles": "c:\\program files (x86)",
 }
 
+# Add commands here that you want to type in CMD of CMC
 shell_commands = {
     "ip": "ipconfig /all",
     "wginst": 'msiexec /i "c:\\temp\\WatchGuard Agent.msi" /qn /L*V "c:\\temp\\WatchGuardAgent.log"',
