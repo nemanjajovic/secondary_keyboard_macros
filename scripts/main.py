@@ -57,29 +57,41 @@ def show_input_window():
         execute_command(command)
 
 
+def close_program(*_):
+    try:
+        open(f"{path}/keypressed.txt", "w").close()
+        os.system("taskkill /f /im luamacros.exe")
+    except Exception as e:
+        print(f"Error during shutdown: {e}")
+    print("Exiting...")
+    os._exit(0)
+
+
 # test function for on_cursor_change
 def click():
     pyautogui.click()
 
 
 # === MAIN SECOND KEYBOARD MACRO FUNCTIONALITY ===
+KEY_ACTIONS = {
+    "1": lambda: on_cursor_change(0.5, click),
+    "up": check_panda_svc,
+    "left": lambda: pyautogui.hotkey("ctrl", "shift", "tab"),
+    "right": lambda: pyautogui.hotkey("ctrl", "tab"),
+    "t": lambda: execute_command(command="temp"),
+    "q": close_program,
+    "s": lambda: print("ssss"),
+}
+
+
 def read_macro_file():
+    file_path = os.path.join(path, "keypressed.txt")
     try:
-        with open(f"{path}/keypressed.txt", "r") as f:
+        with open(file_path, "r") as f:
             key = f.read().strip()
-        if key == "1":
-            on_cursor_change(0.5, click)
-        elif key == "up":
-            # Check panda services
-            check_panda_svc()
-        elif key == "left":
-            pyautogui.hotkey("ctrl", "shift", "tab")
-        elif key == "right":
-            pyautogui.hotkey("ctrl", "tab")
-        elif key == "t":
-            execute_command(command="temp")
-        elif key == "q":
-            close_program()
+        action = KEY_ACTIONS.get(key)
+        if action:
+            action()
         else:
             print(f"Keyboard 2: {key}")
     except FileNotFoundError:
@@ -98,16 +110,6 @@ def ctrl_f_listener():
             show_input_window()
         else:
             print("Target window not active")
-
-
-def close_program(*_):
-    try:
-        open(f"{path}/keypressed.txt", "w").close()
-        os.system("taskkill /f /im luamacros.exe")
-    except Exception as e:
-        print(f"Error during shutdown: {e}")
-    print("Exiting...")
-    os._exit(0)
 
 
 # === RUNTIME ===
