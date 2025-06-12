@@ -83,21 +83,21 @@ def start_lua():
     pyautogui.hotkey("ctrl", "v")
     pyautogui.click(cord_x, cord_y)
 
-    # If a different keyboard ID is detected, restart LuaMacros with the new ID
-    if keyboard_selector != "'0000AAA'":
-        os.system("taskkill /f /im luamacros.exe")  # Force close LuaMacros
-        modify_copied_content(
-            "local keyboardIdentifier", read_output()
-        )  # Update clipboard with new keyboard ID
+    # # If a different keyboard ID is detected, restart LuaMacros with the new ID
+    # if keyboard_selector != "'0000AAA'":
+    #     os.system("taskkill /f /im luamacros.exe")  # Force close LuaMacros
+    #     modify_copied_content(
+    #         "local keyboardIdentifier", read_output()
+    #     )  # Update clipboard with new keyboard ID
 
-        # Relaunch LuaMacros with updated script
-        os.startfile(f"{path}/LuaMacros.exe")
+    #     # Relaunch LuaMacros with updated script
+    #     os.startfile(f"{path}/LuaMacros.exe")
 
-        # Wait for LuaMacros.exe to fully load
-        if wait_for_window("LuaMacros.exe"):
-            print("LuaMacros.exe loaded")
-        pyautogui.hotkey("ctrl", "v")
-        pyautogui.click(cord_x, cord_y)
+    #     # Wait for LuaMacros.exe to fully load
+    #     if wait_for_window("LuaMacros.exe"):
+    #         print("LuaMacros.exe loaded")
+    #     pyautogui.hotkey("ctrl", "v")
+    #     pyautogui.click(cord_x, cord_y)
 
-        # Minimize the LuaMacros window to keep things clean
-        gw.getActiveWindow().minimize()
+    #     # Minimize the LuaMacros window to keep things clean
+    #     gw.getActiveWindow().minimize()

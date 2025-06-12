@@ -4,13 +4,14 @@
 -- plug in your 2nd keyboard, load this script into LUAmacros, and press the triangle PLAY button.
 -- Then, press any key on that keyboard to assign logical name ('MACROS') to macro keyboard
 clear() --clear the console from last run
-local keyboardIdentifier = '2FE3714A'
+local keyboardIdentifier = '0000AAA'
 
 -- Work: 'C:\\Users\\nj250196\\OneDrive - NCR Corporation\\Desktop\\secondary_keyboard_macros\\keypressed.txt'
 -- Home: 'C:\\Users\\User\\Desktop\\luamacros\\keypressed.txt'
 
-local path = 'C:\\Users\\nj250196\\OneDrive - NCR Corporation\\Desktop\\secondary_keyboard_macros\\keypressed.txt'
-local outputFilePath = 'C:\\Users\\nj250196\\OneDrive - NCR Corporation\\Desktop\\secondary_keyboard_macros\\luaoutput.txt'
+local userProfile = os.getenv("USERPROFILE")
+local path = userProfile .. '\\Desktop\\secondary_keyboard_macros\\keypressed.txt'
+local outputFilePath = userProfile .. '\\Desktop\\secondary_keyboard_macros\\luaoutput.txt'
 
 
 
@@ -176,4 +177,6 @@ lmc_set_handler('MACROS', function(button, direction)
                 print('Not yet assigned: ' .. button)
 	end
 end)
+
+
 
