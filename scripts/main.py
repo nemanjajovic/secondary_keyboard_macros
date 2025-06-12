@@ -67,14 +67,11 @@ def close_program(*_):
     os._exit(0)
 
 
-# test function for on_cursor_change
-def click():
-    pyautogui.click()
-
-
 # === MAIN SECOND KEYBOARD MACRO FUNCTIONALITY ===
 KEY_ACTIONS = {
-    "1": lambda: on_cursor_change(0.5, click),
+    "1": lambda: on_cursor_change(
+        0.5, lambda: pyautogui.click()
+    ),  # click on cursor change
     "up": check_panda_svc,
     "left": lambda: pyautogui.hotkey("ctrl", "shift", "tab"),
     "right": lambda: pyautogui.hotkey("ctrl", "tab"),

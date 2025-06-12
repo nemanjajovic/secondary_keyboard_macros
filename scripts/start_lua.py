@@ -2,7 +2,6 @@ import os
 import re
 import time
 
-# import psutil
 import pyautogui
 import pygetwindow as gw
 import pyperclip
@@ -10,23 +9,8 @@ import win32gui
 from clipboard_modifier import modify_copied_content
 from config.configuration import cord_x, cord_y, keyboard_selector, path
 
-# This sometimes loads process before window loads and the script doesnt behave as intended
-# Wait for LuaMacros.exe to fully load
-# def wait_for_process(name, timeout=30):
-#     start_time = time.time()
-#     while time.time() - start_time < timeout:
-#         for proc in psutil.process_iter(["name"]):
-#             if proc.info["name"] == name:
-#                 return True
-#         time.sleep(1)
-#     return False
 
-# Example usage
-# if wait_for_process("Process Name"):
-#     print("Process started")
-
-
-# Better version of wait for LuaMacros.exe window to fully load
+# Wait for LuaMacros.exe window to fully load
 def wait_for_window(title_keyword, timeout=30):
     start_time = time.time()
     while time.time() - start_time < timeout:
