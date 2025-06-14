@@ -8,11 +8,20 @@ local keyboardIdentifier = '0000AAA'
 
 -- Work: 'C:\\Users\\nj250196\\OneDrive - NCR Corporation\\Desktop\\secondary_keyboard_macros\\keypressed.txt'
 -- Home: 'C:\\Users\\User\\Desktop\\luamacros\\keypressed.txt'
+local path = 'C:\\Users\\nj250196\\Desktop\\secondary_keyboard_macros\\keypressed.txt'
+local outputFilePath = 'C:\\Users\\nj250196\\Desktop\\secondary_keyboard_macros\\luaoutput.txt'
 
-local userProfile = os.getenv("USERPROFILE")
-local path = userProfile .. '\\Desktop\\secondary_keyboard_macros\\keypressed.txt'
-local outputFilePath = userProfile .. '\\Desktop\\secondary_keyboard_macros\\luaoutput.txt'
-
+-- MUST BE RUN AS ADMINISTRATOR TO BE ABLE TO DYNAMICALY GET THE WORKING DIRECTORY
+-- -- Open a pipe to run the Windows 'cd' command, which returns the current working directory
+-- local handle = io.popen("cd")
+-- -- Read the output of the command as a single line (i.e., C:\Users\User\LUAMacros\luascript.lua)
+-- local cwd = handle:read("*l")
+-- -- Close the pipe to free system resources
+-- handle:close()
+-- -- Construct the full path to 'keypressed.txt' by appending the filename to the working directory
+-- local path = cwd .. "\\keypressed.txt"
+-- -- Construct the full path to 'luaoutput.txt' similarly
+-- local outputFilePath = cwd .. "\\luaoutput.txt"
 
 
 --You need to get the identifier code for the keyboard with name "MACROS"
@@ -30,12 +39,17 @@ dev = lmc_get_devices()
 
 -- Need this output file so we could read it with python so that we can dinamically determine which keyboard is connected to the system
 local output = io.open(outputFilePath, "w")
+if not output then
+  print("Failed to open output file at: " .. outputFilePath)
+  return
+end
+
 for key,value in pairs(dev) do
   print(key..':')
-  output:write(key..':')
+  output:write(key .. ':\n')
   for key2,value2 in pairs(value) do
       print('  '..key2..' = '..value2)
-      output:write('  '..key2..' = '..value2)
+      output:write('  ' .. key2 .. ' = ' .. value2 .. '\n')
   end
 end
 output:flush()

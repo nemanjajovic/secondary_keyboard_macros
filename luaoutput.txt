@@ -1,1 +1,20 @@
-0:  SystemId = \\?\HID#CONVERTEDDEVICE&COL01#5&379854AA&0&0000#{884B96C3-56EF-11D1-BC8C-00A0C91405DD}  Type = keyboard  Name = <unassigned>  Handle = 657191:  SystemId = \\?\HID#VID_0488&PID_0004&COL02#7&393B5B3&0&0001#{884B96C3-56EF-11D1-BC8C-00A0C91405DD}  Type = keyboard  Name = <unassigned>  Handle = 657172:  SystemId = \\?\ACPI#DLLK08B8#4&3DE5CD5&0#{884B96C3-56EF-11D1-BC8C-00A0C91405DD}  Type = keyboard  Name = MACROS  Handle = 65715
+0:
+  Handle = 4064985
+  SystemId = \\?\HID#VID_2A7A&PID_939F&MI_00#7&23FC0E75&0&0000#{884B96C3-56EF-11D1-BC8C-00A0C91405DD}
+  Name = <unassigned>
+  Type = keyboard
+1:
+  Handle = 65719
+  SystemId = \\?\HID#CONVERTEDDEVICE&COL01#5&379854AA&0&0000#{884B96C3-56EF-11D1-BC8C-00A0C91405DD}
+  Name = <unassigned>
+  Type = keyboard
+3:
+  Handle = 65715
+  SystemId = \\?\ACPI#DLLK08B8#4&3DE5CD5&0#{884B96C3-56EF-11D1-BC8C-00A0C91405DD}
+  Name = <unassigned>
+  Type = keyboard
+2:
+  Handle = 65717
+  SystemId = \\?\HID#VID_0488&PID_0004&COL02#7&393B5B3&0&0001#{884B96C3-56EF-11D1-BC8C-00A0C91405DD}
+  Name = <unassigned>
+  Type = keyboard

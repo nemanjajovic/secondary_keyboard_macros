@@ -65,6 +65,11 @@ def read_output():
 
 # Automates the LuaMacros workflow: sets up the script, injects the correct keyboard ID, and runs LuaMacros
 def start_lua():
+
+    # Clear the file before every use
+    # with open("luaoutput.txt", "w") as file:
+    #     file.write("")
+
     # Read the contents of the Lua script and copy to clipboard
     with open(f"{path}/luascript.lua", "r") as f:
         pyperclip.copy(f.read())
@@ -82,22 +87,24 @@ def start_lua():
     # Paste the script and click on specified coordinates to run
     pyautogui.hotkey("ctrl", "v")
     pyautogui.click(cord_x, cord_y)
+    # time.sleep(1)q
 
-    # # If a different keyboard ID is detected, restart LuaMacros with the new ID
-    # if keyboard_selector != "'0000AAA'":
-    #     os.system("taskkill /f /im luamacros.exe")  # Force close LuaMacros
-    #     modify_copied_content(
-    #         "local keyboardIdentifier", read_output()
-    #     )  # Update clipboard with new keyboard ID
+    # If a different keyboard ID is detected, restart LuaMacros with the new ID
+    if keyboard_selector != "'0000AAA'":
+        os.system("taskkill /f /im luamacros.exe")  # Force close LuaMacros
+        modify_copied_content(
+            "local keyboardIdentifier", read_output()
+        )  # Update clipboard with new keyboard ID
 
-    #     # Relaunch LuaMacros with updated script
-    #     os.startfile(f"{path}/LuaMacros.exe")
+        # Relaunch LuaMacros with updated script
+        os.startfile(f"{path}/LuaMacros.exe")
 
-    #     # Wait for LuaMacros.exe to fully load
-    #     if wait_for_window("LuaMacros.exe"):
-    #         print("LuaMacros.exe loaded")
-    #     pyautogui.hotkey("ctrl", "v")
-    #     pyautogui.click(cord_x, cord_y)
+        # Wait for LuaMacros.exe to fully load
+        if wait_for_window("LuaMacros.exe"):
+            print("LuaMacros.exe loaded")
+        pyautogui.hotkey("ctrl", "v")
+        pyautogui.click(cord_x, cord_y)
+        # time.sleep(1)
 
-    #     # Minimize the LuaMacros window to keep things clean
-    #     gw.getActiveWindow().minimize()
+        # Minimize the LuaMacros window to keep things clean
+        gw.getActiveWindow().minimize()
