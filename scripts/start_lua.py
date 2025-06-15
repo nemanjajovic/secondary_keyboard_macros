@@ -87,7 +87,6 @@ def start_lua():
     # Paste the script and click on specified coordinates to run
     pyautogui.hotkey("ctrl", "v")
     pyautogui.click(cord_x, cord_y)
-    # time.sleep(1)q
 
     # If a different keyboard ID is detected, restart LuaMacros with the new ID
     if keyboard_selector != "'0000AAA'":
@@ -104,7 +103,6 @@ def start_lua():
             print("LuaMacros.exe loaded")
         pyautogui.hotkey("ctrl", "v")
         pyautogui.click(cord_x, cord_y)
-        # time.sleep(1)
 
         # Minimize the LuaMacros window to keep things clean
         gw.getActiveWindow().minimize()
