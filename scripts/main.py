@@ -100,6 +100,7 @@ def on_f24(event):
         read_macro_file()
 
 
+# Listen for CTRL+F and show input window for commands only if CMC window is active
 def ctrl_f_listener():
     while True:
         keyboard.wait("ctrl+f")
