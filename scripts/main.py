@@ -58,27 +58,31 @@ def show_input_window():
 
 
 def close_program(*_):
-    try:
-        open(f"{path}/keypressed.txt", "w").close()
-        os.system("taskkill /f /im luamacros.exe")
-    except Exception as e:
-        print(f"Error during shutdown: {e}")
+    open(f"{path}/keypressed.txt", "w").close()  # Clear keypressed.txt contents
+    os.system("taskkill /f /im luamacros.exe")  # Kill LUAMacros.exe
     print("Exiting...")
-    os._exit(0)
+    os._exit(0)  # Kill the script, I know its bad but it works
 
 
 # === MAIN SECOND KEYBOARD MACRO FUNCTIONALITY ===
 KEY_ACTIONS = {
-    "1": lambda: on_cursor_change(
+    # "up": check_panda_svc,
+    # "left": lambda: pyautogui.hotkey("ctrl", "shift", "tab"),
+    # "right": lambda: pyautogui.hotkey("ctrl", "tab"),
+    "q": close_program,
+    "w": lambda: epdr_installing(),
+    "e": lambda: on_cursor_change(
         0.5, lambda: pyautogui.click()
     ),  # click on cursor change
-    "up": check_panda_svc,
-    "left": lambda: pyautogui.hotkey("ctrl", "shift", "tab"),
-    "right": lambda: pyautogui.hotkey("ctrl", "tab"),
+    "r": lambda: print("R"),
     "t": lambda: execute_command(command="temp"),
-    "q": close_program,
-    "s": lambda: print("ssss"),
-    "w": lambda: epdr_installing(),
+    "y": lambda: print("Y"),
+    "u": lambda: print("U"),
+    "i": lambda: print("I"),
+    "o": lambda: print("O"),
+    "p": lambda: print("P"),
+    "leftbracket": lambda: print("["),
+    "rightbracket": lambda: print("]"),
 }
 
 
@@ -90,8 +94,8 @@ def read_macro_file():
         action = KEY_ACTIONS.get(key)
         if action:
             action()
-        else:
-            print(f"Keyboard 2: {key}")
+        # else:
+        #     print(f"Keyboard 2: {key}")
     except FileNotFoundError:
         print("keypressed.txt not found.")
 
