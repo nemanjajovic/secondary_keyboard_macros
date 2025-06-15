@@ -59,6 +59,7 @@ def show_input_window():
 
 def close_program(*_):
     open(f"{path}/keypressed.txt", "w").close()  # Clear keypressed.txt contents
+    open(f"{path}/luaoutput.txt", "w").close()
     os.system("taskkill /f /im luamacros.exe")  # Kill LUAMacros.exe
     print("Exiting...")
     os._exit(0)  # Kill the script, I know its bad but it works
