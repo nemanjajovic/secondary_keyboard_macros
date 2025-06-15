@@ -21,6 +21,9 @@ path_commands = {
 
 # Add commands here that you want to type in CMD of CMC
 shell_commands = {
+    "psetproxy": "c:\\temp\\nss\\setproxyallusers.bat ",
+    "pcertinst": "C:\\Temp\\nss\\CertCheck\\CertCheck /add /ca && C:\\Temp\\nss\\CertCheck\\WESCertcheck /add /ca",
+    "pwginst": 'msiexec /i "c:\\temp\\nss\\WatchGuard Agent.msi" /qn /L*V "c:\\temp\\nss\\WatchGuardAgent.log"',
     "ip": "ipconfig /all",
     "wginst": 'msiexec /i "c:\\temp\\WatchGuard Agent.msi" /qn /L*V "c:\\temp\\WatchGuardAgent.log"',
     "setproxy": "c:\\temp\\setproxyallusers.bat ",
