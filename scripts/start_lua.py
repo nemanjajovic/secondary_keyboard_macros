@@ -53,7 +53,7 @@ def read_output():
             # Step 3: Extract the part between the 3rd and 4th '&'
             parts = system_id.split("&")
             if len(parts) >= 4:
-                print(parts[3])
+                print(f"Keyboard ID: {parts[3]}")
                 return f"'{parts[3]}'"
             else:
                 print("SystemId does not contain enough '&' symbols.")
