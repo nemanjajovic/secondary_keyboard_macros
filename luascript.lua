@@ -39,6 +39,7 @@ dev = lmc_get_devices()
 
 -- Need this output file so we could read it with python so that we can dinamically determine which keyboard is connected to the system
 local output = io.open(outputFilePath, "w")
+
 if not output then
   print("Failed to open output file at: " .. outputFilePath)
   return

@@ -57,11 +57,10 @@ def show_input_window():
         execute_command(command)
 
 
-def close_program(*_):
-    open(f"{path}/keypressed.txt", "w").close()  # Clear keypressed.txt contents
-    open(f"{path}/luaoutput.txt", "w").close()
+def close_program():
+    open(f"{path}/keypressed.txt", "w").close()  # Clear keypressed.txt content
+    open(f"{path}/luaoutput.txt", "w").close()  # Clear luaoutput.txt content
     os.system("taskkill /f /im luamacros.exe")  # Kill LUAMacros.exe
-    print("Exiting...")
     os._exit(0)  # Kill the script, I know its bad but it works
 
 
@@ -88,17 +87,12 @@ KEY_ACTIONS = {
 
 
 def read_macro_file():
-    file_path = os.path.join(path, "keypressed.txt")
-    try:
-        with open(file_path, "r") as f:
-            key = f.read().strip()
-        action = KEY_ACTIONS.get(key)
-        if action:
-            action()
-        # else:
-        #     print(f"Keyboard 2: {key}")
-    except FileNotFoundError:
-        print("keypressed.txt not found.")
+    with open(f"{path}\keypressed.txt", "r") as f:
+        key = f.read().strip()
+    action = KEY_ACTIONS.get(key)
+    # if action key is found within KEY_ACTIONS run it
+    if action:
+        action()
 
 
 def on_f24(event):
