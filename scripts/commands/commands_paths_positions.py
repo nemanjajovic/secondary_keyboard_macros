@@ -21,9 +21,12 @@ path_commands = {
 
 # Add commands here that you want to type in CMD of CMC
 shell_commands = {
+    "pps": 'C:\\temp\\nss\\psinfo.exe -d:"[AETHERUPDATE FULL | LITE]" /nogui',
+    "pendpoint": "c:\\temp\\nss\\EndpointAgentTool.exe /cfg /su /s /d /c /ku",
     "psetproxy": "c:\\temp\\nss\\setproxyallusers.bat ",
     "pcertinst": "C:\\Temp\\nss\\CertCheck\\CertCheck /add /ca && C:\\Temp\\nss\\CertCheck\\WESCertcheck /add /ca",
     "pwginst": 'msiexec /i "c:\\temp\\nss\\WatchGuard Agent.msi" /qn /L*V "c:\\temp\\nss\\WatchGuardAgent.log"',
+    "endpoint": "c:\\temp\\EndpointAgentTool.exe /cfg /su /s /d /c /ku",
     "ip": "ipconfig /all",
     "wginst": 'msiexec /i "c:\\temp\\WatchGuard Agent.msi" /qn /L*V "c:\\temp\\WatchGuardAgent.log"',
     "setproxy": "c:\\temp\\setproxyallusers.bat ",
