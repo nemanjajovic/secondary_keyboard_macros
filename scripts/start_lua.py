@@ -90,7 +90,9 @@ def start_lua():
 
     # If a different keyboard ID is detected, restart LuaMacros with the new ID
     if keyboard_selector != "'0000AAA'":
-        os.system("taskkill /f /im luamacros.exe")  # Force close LuaMacros
+        os.system(
+            "taskkill /f /im luamacros.exe >nul 2>&1"
+        )  # Force close LuaMacros, also suppress the output
         modify_copied_content(
             "local keyboardIdentifier", read_output()
         )  # Update clipboard with new keyboard ID

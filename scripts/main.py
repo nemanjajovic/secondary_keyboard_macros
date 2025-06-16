@@ -67,7 +67,6 @@ def close_program():
 # === MAIN SECOND KEYBOARD MACRO FUNCTIONALITY ===
 KEY_ACTIONS = {
     "up": check_panda_svc,
-    # "left": lambda: pyautogui.hotkey("ctrl", "shift", "tab"),
     "right": transfer_nss,
     "q": close_program,
     "w": lambda: epdr_installing(),
