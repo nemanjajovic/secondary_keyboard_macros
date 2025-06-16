@@ -2,9 +2,13 @@ import re
 
 import pyperclip
 
+# Make sure the print() gets run only once
+is_printed = False
+
 
 # Create a dictionary of command actions based on predefined screen positions
 def modify_copied_content(target_variable, replacement_value):
+    global is_printed
     # Get the current clipboard content (assumes it's already been copied)
     content = pyperclip.paste()
     modified_lines = []
@@ -21,4 +25,8 @@ def modify_copied_content(target_variable, replacement_value):
     # Combine modified lines and update the clipboard with the new content
     modified_content = "\n".join(modified_lines)
     pyperclip.copy(modified_content)
-    print("Modified content copied to clipboard!")
+
+    # Make sure this gets printed only once
+    if not is_printed:
+        print("Modified content copied to clipboard!")
+        is_printed = True
