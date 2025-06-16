@@ -9,7 +9,7 @@ import pyautogui
 import pygetwindow as gw
 from commands.commands_paths_positions import path_commands, positions, shell_commands
 from config.configuration import cmd_position, icon_path, path
-from macro_functions import check_panda_svc, epdr_installing
+from macro_functions import check_panda_svc, epdr_installing, transfer_nss
 from on_cursor_change import on_cursor_change
 from start_lua import start_lua
 from tray import run_tray_icon
@@ -66,9 +66,9 @@ def close_program():
 
 # === MAIN SECOND KEYBOARD MACRO FUNCTIONALITY ===
 KEY_ACTIONS = {
-    # "up": check_panda_svc,
+    "up": check_panda_svc,
     # "left": lambda: pyautogui.hotkey("ctrl", "shift", "tab"),
-    # "right": lambda: pyautogui.hotkey("ctrl", "tab"),
+    "right": transfer_nss,
     "q": close_program,
     "w": lambda: epdr_installing(),
     "e": lambda: on_cursor_change(
