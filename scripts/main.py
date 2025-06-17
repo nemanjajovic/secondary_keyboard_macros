@@ -36,10 +36,12 @@ def execute_command(command):
         time.sleep(0.2)
         pyautogui.write(path_commands[command])
         pyautogui.press("enter")
+        print(f"Moved to: {path_commands[command]}")
     elif command in shell_commands:
         pyautogui.click(*cmd_position)
         time.sleep(0.2)
         pyautogui.write(shell_commands[command])
+        print(f"Executed: {shell_commands[command]}")
     else:
         print(f"Error: '{command}' is not a recognized command.")
 
