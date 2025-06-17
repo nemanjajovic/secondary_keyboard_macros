@@ -109,9 +109,34 @@ def ctrl_f_listener():
             print("Target window not active")
 
 
+sf_clicker_running = False  # Controls whether the thread should run
+click_thread = None
+
+
+# Click on a refresh button in salesforce
+def salesforce_clicker():
+    while sf_clicker_running:
+        pyautogui.click(1769, 342)
+        time.sleep(20)
+
+
+# Toggle clicking with F8
+def toggle_clicker():
+    global sf_clicker_running, click_thread
+    if sf_clicker_running:
+        sf_clicker_running = False
+        print("Clicking stopped.")
+    else:
+        sf_clicker_running = True
+        click_thread = threading.Thread(target=salesforce_clicker, daemon=True)
+        click_thread.start()
+        print("Clicking started.")
+
+
 # === RUNTIME ===
 if __name__ == "__main__":
     start_lua()
+    keyboard.add_hotkey("f8", toggle_clicker)
     keyboard.on_press(on_f24)
     threading.Thread(target=ctrl_f_listener, daemon=True).start()
     threading.Thread(
