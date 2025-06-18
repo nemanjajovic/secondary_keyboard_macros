@@ -2,6 +2,7 @@ import os
 import time
 
 import pyautogui
+from on_cursor_change import on_cursor_change
 
 # Initialize %USERPROFILE% system variable. eg. user_path = "C:\\Users\\User"
 user_path = os.environ["USERPROFILE"]
@@ -45,3 +46,12 @@ def transfer_nss():
     pyautogui.mouseDown()  # Click down
     pyautogui.dragTo(1300, 285, 0.3)  # Drag to the host machine window
     pyautogui.mouseUp()  # Release the click
+    pyautogui.press("f5")
+
+
+def epdr_auto_download():
+    pyautogui.click(1764, 338)
+    time.sleep(1)
+    pyautogui.click(732, 444)
+    pyautogui.moveTo(1068, 750)
+    on_cursor_change(0.5, lambda: pyautogui.click())
