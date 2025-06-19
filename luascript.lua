@@ -6,10 +6,11 @@
 clear() --clear the console from last run
 local keyboardIdentifier = '0000AAA'
 
--- Work: 'C:\\Users\\nj250196\\OneDrive - NCR Corporation\\Desktop\\secondary_keyboard_macros\\keypressed.txt'
--- Home: 'C:\\Users\\User\\Desktop\\luamacros\\keypressed.txt'
-local path = 'C:\\Users\\nj250196\\Desktop\\secondary_keyboard_macros\\keypressed.txt'
-local outputFilePath = 'C:\\Users\\nj250196\\Desktop\\secondary_keyboard_macros\\luaoutput.txt'
+
+local path = "../keypressed.txt"
+local outputFilePath = "../luaoutput.txt"
+
+
 
 -- MUST BE RUN AS ADMINISTRATOR TO BE ABLE TO DYNAMICALY GET THE WORKING DIRECTORY
 -- -- Open a pipe to run the Windows 'cd' command, which returns the current working directory
