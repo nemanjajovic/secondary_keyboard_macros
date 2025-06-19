@@ -1,9 +1,11 @@
 import os
+from pathlib import Path
 
 user_profile = os.environ["USERPROFILE"]
 
 # === CONFIGURATION ===
-path = f"{user_profile}/Desktop/secondary_keyboard_macros"
+cwd = Path.cwd()  # get current working directory where main.py is
+path = cwd / ".."  # set the base path to one directory behind ./scripts/
 keyboard_selector = (
     "'0000BBB'"  # Change to "'0000AAA'" if 0000BBB fails for some reason
 )

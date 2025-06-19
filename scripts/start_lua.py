@@ -35,7 +35,7 @@ def wait_for_window(title_keyword, timeout=30):
 # Reads and parses the Lua script output to extract the keyboard ID from the block labeled '0:'
 def read_output():
     # Open and read the contents of the output file
-    with open("../luaoutput.txt", "r") as f:
+    with open(f"{path}/luaoutput.txt", "r") as f:
         content = f.read()
 
     # Step 1: Find the block that starts with '0:' and ends before the next number-colon pattern
