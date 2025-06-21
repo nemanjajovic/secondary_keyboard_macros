@@ -96,7 +96,7 @@ KEY_ACTIONS = {
 
 
 def read_macro_file():
-    with open(f"{path}\keypressed.txt", "r") as f:
+    with open(f"{path}/keypressed.txt", "r") as f:
         key = f.read().strip()
     action = KEY_ACTIONS.get(key)
     # if action key is found within KEY_ACTIONS run it
