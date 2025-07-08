@@ -55,3 +55,16 @@ def epdr_auto_download():
     pyautogui.click(732, 444)
     pyautogui.moveTo(1068, 750)
     on_cursor_change(0.5, lambda: pyautogui.click())
+
+
+def find_site():
+    pyautogui.click(188, 971)
+    pyautogui.hotkey("ctrl", "a")
+    pyautogui.hotkey("ctrl", "v")
+    pyautogui.click(446, 971)
+    query_services()
+
+
+def query_services():
+    pyautogui.click(578, 111)
+    pyautogui.moveTo(678, 811)

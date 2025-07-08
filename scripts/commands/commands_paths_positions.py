@@ -4,6 +4,7 @@ positions = {
     "fl": [(493, 114), (559, 172)],
     "conf": [(493, 114), (579, 229)],
     "check": [(412, 108), (482, 241)],
+    "reset": [(412, 108), (440, 144)],
     "svc": [(576, 113)],
     "rl": [(1901, 582)],
 }
@@ -26,6 +27,7 @@ shell_commands = {
     "psetproxy": "c:\\temp\\nss\\setproxyallusers.bat ",
     "pcertinst": "C:\\Temp\\nss\\CertCheck\\CertCheck /add /ca && C:\\Temp\\nss\\CertCheck\\WESCertcheck /add /ca",
     "pwginst": 'msiexec /i "c:\\temp\\nss\\WatchGuard Agent.msi" /qn /L*V "c:\\temp\\nss\\WatchGuardAgent.log"',
+    "checkproxy": "netsh winhttp show proxy",
     "endpoint": "c:\\temp\\EndpointAgentTool.exe /cfg /su /s /d /c /ku",
     "ip": "ipconfig /all",
     "wginst": 'msiexec /i "c:\\temp\\WatchGuard Agent.msi" /qn /L*V "c:\\temp\\WatchGuardAgent.log"',

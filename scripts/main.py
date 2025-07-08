@@ -15,6 +15,8 @@ from macro_functions import (
     check_panda_svc,
     epdr_auto_download,
     epdr_installing,
+    find_site,
+    query_services,
     transfer_nss,
 )
 from on_cursor_change import on_cursor_change
@@ -33,9 +35,11 @@ command_actions = {
 
 
 def execute_command(command):
+    current_position = pyautogui.position()
     command = command.strip().lower()
     if command in command_actions:
         command_actions[command]()
+        pyautogui.moveTo(current_position)
     elif command in path_commands:
         pyautogui.click(1483, 582)
         time.sleep(0.2)
@@ -44,11 +48,13 @@ def execute_command(command):
         pyautogui.write(path_commands[command])
         pyautogui.press("enter")
         print(f"Moved to: {path_commands[command]}")
+        pyautogui.moveTo(current_position)
     elif command in shell_commands:
         pyautogui.click(*cmd_position)
         time.sleep(0.2)
         pyautogui.write(shell_commands[command])
         print(f"Executed: {shell_commands[command]}")
+        pyautogui.moveTo(current_position)
     else:
         print(f"Error: '{command}' is not a recognized command.")
 
@@ -76,10 +82,11 @@ def close_program():
 # === MAIN SECOND KEYBOARD MACRO FUNCTIONALITY ===
 KEY_ACTIONS = {
     "enter": lambda: pyautogui.press("enter"),
-    "1": lambda: execute_command(command="pcertinst"),
-    "2": lambda: execute_command(command="pwginst"),
+    "1": lambda: execute_command(command="certinst"),
+    "2": lambda: execute_command(command="wginst"),
     "up": check_panda_svc,
     "right": transfer_nss,
+    "down": lambda: print("Down"),
     "q": close_program,
     "w": lambda: epdr_installing(),
     "e": epdr_auto_download,
@@ -92,6 +99,10 @@ KEY_ACTIONS = {
     "p": lambda: print("P"),
     "leftbracket": lambda: print("["),
     "rightbracket": lambda: print("]"),
+    "a": lambda: print("A"),
+    "s": query_services,
+    "d": lambda: print("D"),
+    "f": find_site,
 }
 
 
@@ -121,51 +132,51 @@ def ctrl_f_listener():
 
 # === SALESFORCE CLICKER START ===
 
-sf_clicker_running = False  # Controls whether the thread should run
-click_thread = None
+# sf_clicker_running = False  # Controls whether the thread should run
+# click_thread = None
 
 
 # Check if HOS ENT NSS and NSS Antivirus is present in the clipboard and then play sound if True
-def check_clipboard():
-    # Get text from clipboard
-    clipboard_text = pyperclip.paste()
+# def check_clipboard():
+#     # Get text from clipboard
+#     clipboard_text = pyperclip.paste()
 
-    # Check for keywords
-    contains_keywords = (
-        "HOS ENT NSS" in clipboard_text and "NSS Antivirus" in clipboard_text
-    )
-    if contains_keywords:
-        winsound.Beep(450, 300)
-        winsound.Beep(450, 300)
+#     # Check for keywords
+#     contains_keywords = (
+#         "HOS ENT NSS" in clipboard_text and "NSS Antivirus" in clipboard_text
+#     )
+#     if contains_keywords:
+#         winsound.Beep(450, 300)
+#         winsound.Beep(450, 300)
 
 
 # Very hardcoded positions, but works for me
-def salesforce_clicker():
-    while sf_clicker_running:
-        pyautogui.click(403, 430)
-        time.sleep(0.1)
-        pyautogui.click(1769, 342)
-        pyautogui.moveTo(1817, 429)
-        on_cursor_change(0.5, lambda: print("Page loaded"))
-        pyautogui.moveTo(1739, 430)
-        pyautogui.mouseDown()
-        pyautogui.moveTo(97, 430)
-        pyautogui.mouseUp()
-        pyautogui.hotkey("ctrl", "c")
-        check_clipboard()
-        time.sleep(30)
+# def salesforce_clicker():
+#     while sf_clicker_running:
+#         pyautogui.click(403, 430)
+#         time.sleep(0.1)
+#         pyautogui.click(1769, 342)
+#         pyautogui.moveTo(1817, 429)
+#         on_cursor_change(0.5, lambda: print("Page loaded"))
+#         pyautogui.moveTo(1739, 430)
+#         pyautogui.mouseDown()
+#         pyautogui.moveTo(97, 430)
+#         pyautogui.mouseUp()
+#         pyautogui.hotkey("ctrl", "c")
+#         check_clipboard()
+#         time.sleep(30)
 
 
-def toggle_clicker():
-    global sf_clicker_running, click_thread
-    if sf_clicker_running:
-        sf_clicker_running = False
-        print("Clicking stopped.")
-    else:
-        sf_clicker_running = True
-        click_thread = threading.Thread(target=salesforce_clicker, daemon=True)
-        click_thread.start()
-        print("Clicking started.")
+# def toggle_clicker():
+#     global sf_clicker_running, click_thread
+#     if sf_clicker_running:
+#         sf_clicker_running = False
+#         print("Clicking stopped.")
+#     else:
+#         sf_clicker_running = True
+#         click_thread = threading.Thread(target=salesforce_clicker, daemon=True)
+#         click_thread.start()
+#         print("Clicking started.")
 
 
 # === SALESFORCE CLICKER END ===
@@ -173,7 +184,7 @@ def toggle_clicker():
 # === RUNTIME ===
 if __name__ == "__main__":
     start_lua()
-    keyboard.add_hotkey("f8", toggle_clicker)
+    # keyboard.add_hotkey("f8", toggle_clicker)
     keyboard.on_press(on_f24)
     threading.Thread(target=ctrl_f_listener, daemon=True).start()
     threading.Thread(
