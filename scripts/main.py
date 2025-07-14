@@ -83,15 +83,11 @@ def close_program():
 
 # === MAIN SECOND KEYBOARD MACRO FUNCTIONALITY ===
 KEY_ACTIONS = {
-    "enter": lambda: pyautogui.press("enter"),
     "1": switch_epdr_account,
     "2": epdr_disabled_report,
     "3": epdr_offline_report,
     "4": schedule_disabled,
     "5": schedule_offline,
-    "up": check_panda_svc,
-    "right": transfer_nss,
-    "down": lambda: print("Down"),
     "q": close_program,
     "w": lambda: epdr_installing(),
     "e": epdr_auto_download,

@@ -109,10 +109,10 @@ positions = {
 
 
 def epdr_disabled_report():
-    # print("epdr disabled")
     pyperclip.copy(sentences["epdr_disabled"])
     pyautogui.hotkey("ctrl", "v")
-    pyautogui.click(718, 461)
+    pyautogui.press("tab")
+    time.sleep(0.4)
     pyperclip.copy(sentences["settings"])
     pyautogui.hotkey("ctrl", "v")
     time.sleep(0.4)
@@ -298,6 +298,7 @@ def schedule_disabled():
     pyautogui.hotkey("ctrl", "shift", "tab")
     time.sleep(0.5)
     pyautogui.hotkey("ctrl", "v")
+    pyautogui.click(1306, 946)
 
 
 def schedule_offline():
@@ -359,6 +360,7 @@ def schedule_offline():
     pyautogui.hotkey("ctrl", "shift", "tab")
     time.sleep(0.5)
     pyautogui.hotkey("ctrl", "v")
+    pyautogui.click(1306, 946)
 
 
 def use_epdr_dialogue():

@@ -81,6 +81,7 @@ def start_lua():
     if wait_for_window("LuaMacros.exe"):
         pass
 
+    time.sleep(1)
     # Paste the script and click on specified coordinates to run
     pyautogui.hotkey("ctrl", "v")
     pyautogui.hotkey("ctrl", "enter")  # Hotkey for running script inside LuaMacros
@@ -101,6 +102,7 @@ def start_lua():
         # Wait for LuaMacros.exe to fully load
         if wait_for_window("LuaMacros.exe"):
             print("LuaMacros.exe loaded")
+        time.sleep(0.5)
         pyautogui.hotkey("ctrl", "v")
         pyautogui.hotkey(
             "ctrl", "enter"

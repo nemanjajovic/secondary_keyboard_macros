@@ -94,15 +94,15 @@ local config = {
 	[121] = "F10",
 	[122] = "F11",
 	[123] = "F12",
-	[8]   = "backspace",
+	-- [8]   = "backspace",
 	[220] = "backslash",
-	[13]  = "enter",
+	-- [13]  = "enter",
 	[16]  = "rShift",
 	[17]  = "rCtrl",
-	[38]  = "up",
-	[37]  = "left",
-	[40]  = "down",
-	[39]  = "right",
+	-- [38]  = "up",
+	-- [37]  = "left",
+	-- [40]  = "down",
+	-- [39]  = "right",
 	[32]  = "space",
 	[186] = "semicolon",
 	[222] = "singlequote",
@@ -188,10 +188,20 @@ lmc_set_handler('MACROS', function(button, direction)
                 print('Your key ID number is:   ' .. button)
 				print('It was assigned string:    ' .. config[button])
 				sendToPython(config[button])
+	
 	else
-                print(' ')
-                print('Not yet assigned: ' .. button)
+		print(' ')
+		print('Not yet assigned: ' .. button)
+		-- Forward arrow keys to OS
+		if button == 37 then lmc_send_keys('{LEFT}')
+		elseif button == 38 then lmc_send_keys('{UP}')
+		elseif button == 39 then lmc_send_keys('{RIGHT}')
+		elseif button == 40 then lmc_send_keys('{DOWN}')
+		elseif button == 13 then lmc_send_keys('\n')
+
+		end
 	end
+
 end)
 
 
