@@ -12,9 +12,14 @@ from config.configuration import cmd_position, icon_path, path
 from macro_functions import (
     check_panda_svc,
     epdr_auto_download,
+    epdr_disabled_report,
     epdr_installing,
+    epdr_offline_report,
     find_site,
     query_services,
+    schedule_disabled,
+    schedule_offline,
+    switch_epdr_account,
     transfer_nss,
 )
 from start_lua import start_lua
@@ -79,8 +84,12 @@ def close_program():
 # === MAIN SECOND KEYBOARD MACRO FUNCTIONALITY ===
 KEY_ACTIONS = {
     "enter": lambda: pyautogui.press("enter"),
-    "1": lambda: execute_command(command="certinst"),
+    "1": switch_epdr_account,
     "2": lambda: execute_command(command="wginst"),
+    "3": epdr_disabled_report,
+    "4": epdr_offline_report,
+    "5": schedule_disabled,
+    "6": schedule_offline,
     "up": check_panda_svc,
     "right": transfer_nss,
     "down": lambda: print("Down"),
