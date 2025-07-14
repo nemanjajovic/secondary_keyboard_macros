@@ -2,13 +2,11 @@ import os
 import threading
 import time
 import tkinter as tk
-import winsound
 from tkinter import simpledialog
 
 import keyboard
 import pyautogui
 import pygetwindow as gw
-import pyperclip
 from commands.commands_paths_positions import path_commands, positions, shell_commands
 from config.configuration import cmd_position, icon_path, path
 from macro_functions import (
@@ -19,7 +17,6 @@ from macro_functions import (
     query_services,
     transfer_nss,
 )
-from on_cursor_change import on_cursor_change
 from start_lua import start_lua
 from tray import run_tray_icon
 
@@ -130,61 +127,9 @@ def ctrl_f_listener():
             print("Target window not active")
 
 
-# === SALESFORCE CLICKER START ===
-
-# sf_clicker_running = False  # Controls whether the thread should run
-# click_thread = None
-
-
-# Check if HOS ENT NSS and NSS Antivirus is present in the clipboard and then play sound if True
-# def check_clipboard():
-#     # Get text from clipboard
-#     clipboard_text = pyperclip.paste()
-
-#     # Check for keywords
-#     contains_keywords = (
-#         "HOS ENT NSS" in clipboard_text and "NSS Antivirus" in clipboard_text
-#     )
-#     if contains_keywords:
-#         winsound.Beep(450, 300)
-#         winsound.Beep(450, 300)
-
-
-# Very hardcoded positions, but works for me
-# def salesforce_clicker():
-#     while sf_clicker_running:
-#         pyautogui.click(403, 430)
-#         time.sleep(0.1)
-#         pyautogui.click(1769, 342)
-#         pyautogui.moveTo(1817, 429)
-#         on_cursor_change(0.5, lambda: print("Page loaded"))
-#         pyautogui.moveTo(1739, 430)
-#         pyautogui.mouseDown()
-#         pyautogui.moveTo(97, 430)
-#         pyautogui.mouseUp()
-#         pyautogui.hotkey("ctrl", "c")
-#         check_clipboard()
-#         time.sleep(30)
-
-
-# def toggle_clicker():
-#     global sf_clicker_running, click_thread
-#     if sf_clicker_running:
-#         sf_clicker_running = False
-#         print("Clicking stopped.")
-#     else:
-#         sf_clicker_running = True
-#         click_thread = threading.Thread(target=salesforce_clicker, daemon=True)
-#         click_thread.start()
-#         print("Clicking started.")
-
-
-# === SALESFORCE CLICKER END ===
-
 # === RUNTIME ===
 if __name__ == "__main__":
     start_lua()
-    # keyboard.add_hotkey("f8", toggle_clicker)
     keyboard.on_press(on_f24)
     threading.Thread(target=ctrl_f_listener, daemon=True).start()
     threading.Thread(

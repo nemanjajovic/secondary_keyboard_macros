@@ -7,7 +7,7 @@ import pygetwindow as gw
 import pyperclip
 import win32gui
 from clipboard_modifier import modify_copied_content
-from config.configuration import cord_x, cord_y, keyboard_selector, path
+from config.configuration import keyboard_selector, path
 
 
 # Wait for LuaMacros.exe window to fully load
@@ -66,15 +66,12 @@ def read_output():
 # Automates the LuaMacros workflow: sets up the script, injects the correct keyboard ID, and runs LuaMacros
 def start_lua():
 
-    # Clear the file before every use
-    # with open("luaoutput.txt", "w") as file:
-    #     file.write("")
-
     # Read the contents of the Lua script and copy to clipboard
     with open(f"{path}/luascript.lua", "r") as f:
         pyperclip.copy(f.read())
 
     # Modify the clipboard content by inserting the initial keyboard selector value
+    # Change the value to any in config.py or leave on 0000AAA for manual keyboard selection
     modify_copied_content("local keyboardIdentifier", keyboard_selector)
 
     # Launch LuaMacros application
@@ -86,7 +83,8 @@ def start_lua():
 
     # Paste the script and click on specified coordinates to run
     pyautogui.hotkey("ctrl", "v")
-    pyautogui.click(cord_x, cord_y)
+    pyautogui.hotkey("ctrl", "enter")  # Hotkey for running script inside LuaMacros
+    gw.getActiveWindow().minimize()  # Minimize LuaMacros after starting
 
     # If a different keyboard ID is detected, restart LuaMacros with the new ID
     if keyboard_selector != "'0000AAA'":
@@ -104,7 +102,8 @@ def start_lua():
         if wait_for_window("LuaMacros.exe"):
             print("LuaMacros.exe loaded")
         pyautogui.hotkey("ctrl", "v")
-        pyautogui.click(cord_x, cord_y)
-
+        pyautogui.hotkey(
+            "ctrl", "enter"
+        )  # Hotkey for running script inside luamacros.exe
         # Minimize the LuaMacros window to keep things clean
         gw.getActiveWindow().minimize()
