@@ -1,10 +1,11 @@
 import os
+import threading
 import time
 
 import pyautogui
-import pymsgbox
 import pyperclip
 from on_cursor_change import on_cursor_change
+from wait_for_program import wait_for_program
 
 # Initialize %USERPROFILE% system variable. eg. user_path = "C:\\Users\\User"
 user_path = os.environ["USERPROFILE"]
@@ -73,351 +74,142 @@ def query_services():
 
 
 sentences = {
-    "epdr_disabled": "EPDR Disabled",
+    "epdr_update_disabled": "EPDR Update disabled",
     "settings": "Settings",
-    "workstations_and_servers": "Workstations and Servers",
+    "per_computer_settings": "Per-computer settings",
     "is_equal_to": "Is equal to",
-    "nss_disable_av": "NSS Disable AV Settings",
-    "or": "OR",
-    "nss_audit_threatdefender_only": "NSS Audit mode - Threat Defender Only",
-    "nss_audit_threatdefender_and_av": "NSS Audit mode - Threat Defender and AV",
-    "epdr_offline": "EPDR Offline",
-    "computer": "Computer",
-    "last_connection": "Last connection",
-    "not_within_the_last": "Not within the last",
-    "30": "30",
-    "day": "Day",
-    "nemanja": "nemanja.jovic@ncrvoyix.com",
-    "sasa": "sasa.kozarcanin@ncrvoyix.com",
-    "epdr_disabled_subject": "[EPDR Disabled] - ",
-    "epdr_offline_subject": "[EPDR Offline] - ",
-    "reports": "Reports",
 }
 
 positions = {
-    "weekly_x": 976,
-    "weekly_y": 493,
-    "weekly_second_x": 901,
-    "weekly_second_y": 554,
-    "reduced_x": 961,
-    "reduced_y": 707,
-    "to_x": 980,
-    "to_y": 776,
-    "cc_x": 975,
-    "cc_y": 828,
+    "search_account_form_x": 200,
+    "serach_account_form_y": 280,
+    "computers_tab_x": 450,
+    "computers_tab_y": 280,
+    "filter_three_dots_x": 583,
+    "filter_three_dots_y": 439,
+    "reports_three_dots_x": 446,
+    "reports_three_dots_y": 438,
 }
 
+SLEEP_SHORT = 0.2
+SLEEP_NORMAL = 0.4
+SLEEP_LONG = 0.8
+SLEEP_VERY_LONG = 1.2
+SLEEP_ULTRA_LONG = 2
+CHROME_TAB_FORWARD = "forward"
+CHROME_TAB_BACKWARD = "backward"
 
-def epdr_disabled_report():
-    pyperclip.copy(sentences["epdr_disabled"])
-    pyautogui.hotkey("ctrl", "v")
-    pyautogui.press("tab")
-    time.sleep(0.4)
-    pyperclip.copy(sentences["settings"])
-    pyautogui.hotkey("ctrl", "v")
-    time.sleep(0.4)
-    pyautogui.press("tab")
-    time.sleep(0.4)
-    pyperclip.copy(sentences["workstations_and_servers"])
-    pyautogui.hotkey("ctrl", "v")
-    time.sleep(0.4)
-    pyautogui.press("tab")
-    time.sleep(0.4)
-    pyperclip.copy(sentences["is_equal_to"])
-    pyautogui.hotkey("ctrl", "v")
-    time.sleep(0.4)
-    pyautogui.press("tab")
-    time.sleep(0.4)
-    pyperclip.copy(sentences["nss_disable_av"])
-    pyautogui.hotkey("ctrl", "v")
-    time.sleep(0.4)
-    pyautogui.press("tab")
-    time.sleep(0.4)
-    pyautogui.click(1585, 458)
-    time.sleep(0.4)
-    pyautogui.click(712, 497)
-    pyperclip.copy(sentences["or"])
-    pyautogui.hotkey("ctrl", "v")
-    time.sleep(0.4)
-    pyautogui.press("tab")
-    time.sleep(0.4)
-    pyperclip.copy(sentences["settings"])
-    pyautogui.hotkey("ctrl", "v")
-    time.sleep(0.4)
-    pyautogui.press("tab")
-    time.sleep(0.4)
-    pyperclip.copy(sentences["workstations_and_servers"])
-    pyautogui.hotkey("ctrl", "v")
-    time.sleep(0.4)
-    pyautogui.press("tab")
-    time.sleep(0.4)
-    pyperclip.copy(sentences["is_equal_to"])
-    pyautogui.hotkey("ctrl", "v")
-    time.sleep(0.4)
-    pyautogui.press("tab")
-    time.sleep(0.4)
-    pyperclip.copy(sentences["nss_audit_threatdefender_only"])
-    pyautogui.hotkey("ctrl", "v")
-    time.sleep(0.4)
-    pyautogui.press("tab")
-    time.sleep(0.4)
-    pyautogui.click(1585, 458)
-    time.sleep(0.4)
-    pyautogui.click(712, 497)
-    pyperclip.copy(sentences["or"])
-    pyautogui.hotkey("ctrl", "v")
-    time.sleep(0.4)
-    pyautogui.press("tab")
-    time.sleep(0.4)
-    pyperclip.copy(sentences["settings"])
-    pyautogui.hotkey("ctrl", "v")
-    time.sleep(0.4)
-    pyautogui.press("tab")
-    time.sleep(0.4)
-    pyperclip.copy(sentences["workstations_and_servers"])
-    pyautogui.hotkey("ctrl", "v")
-    time.sleep(0.4)
-    pyautogui.press("tab")
-    time.sleep(0.4)
-    pyperclip.copy(sentences["is_equal_to"])
-    pyautogui.hotkey("ctrl", "v")
-    time.sleep(0.4)
-    pyautogui.press("tab")
-    time.sleep(0.4)
-    pyperclip.copy(sentences["nss_audit_threatdefender_and_av"])
-    pyautogui.hotkey("ctrl", "v")
-    time.sleep(0.4)
-    pyautogui.press("tab")
-    time.sleep(0.4)
-    pyautogui.click(1476, 772)
+wiggle_stop_event = threading.Event()
 
 
-def epdr_offline_report():
-    # print("epdr offline")
-    pyautogui.moveTo(571, 895)
-    time.sleep(1)
+# sleep() easier to write than time.sleep()
+def sleep(duration=0.4):
+    time.sleep(duration)
+
+
+# In certain situations pyautogui.click() just wont work
+def delicate_click():
     pyautogui.mouseDown()
     time.sleep(0.2)
     pyautogui.mouseUp()
-    time.sleep(0.5)
-    pyautogui.moveTo(627, 745)
-    time.sleep(1)
-    pyautogui.mouseDown()
     time.sleep(0.2)
-    pyautogui.mouseUp()
-    time.sleep(2)
-    pyperclip.copy(sentences["epdr_offline"])
-    pyautogui.hotkey("ctrl", "v")
-    time.sleep(0.4)
-    pyautogui.press("tab")
-    time.sleep(0.4)
-    pyperclip.copy(sentences["computer"])
-    pyautogui.hotkey("ctrl", "v")
-    time.sleep(0.4)
-    pyautogui.press("tab")
-    time.sleep(0.4)
-    pyperclip.copy(sentences["last_connection"])
-    pyautogui.hotkey("ctrl", "v")
-    time.sleep(0.4)
-    pyautogui.press("tab")
-    time.sleep(0.4)
-    pyperclip.copy(sentences["not_within_the_last"])
-    pyautogui.hotkey("ctrl", "v")
-    time.sleep(0.4)
-    pyautogui.press("tab")
-    time.sleep(0.4)
-    pyperclip.copy(sentences["30"])
-    pyautogui.hotkey("ctrl", "v")
-    time.sleep(0.4)
-    pyautogui.press("tab")
-    time.sleep(0.4)
-    pyperclip.copy(sentences["day"])
-    pyautogui.hotkey("ctrl", "v")
-    time.sleep(0.4)
-    pyautogui.press("tab")
-    time.sleep(0.4)
-    pyautogui.click(1476, 772)
 
 
-def schedule_disabled():
-    # print("scheduled disable report")
-    pyautogui.moveTo(570, 897)
-    time.sleep(1)
-    pyautogui.mouseDown()
-    time.sleep(0.2)
-    pyautogui.mouseUp()
-    time.sleep(0.5)
-    pyautogui.moveTo(647, 872)
-    time.sleep(1)
-    pyautogui.mouseDown()
-    time.sleep(0.2)
-    pyautogui.mouseUp()
-    time.sleep(2)
-    pyautogui.hotkey("ctrl", "a")
-    time.sleep(0.5)
-    pyperclip.copy(sentences["epdr_disabled"])
-    pyautogui.hotkey("ctrl", "v")
-    time.sleep(0.5)
-    pyautogui.press("tab")
-    time.sleep(0.5)
-    pyautogui.press("tab")
-    time.sleep(0.5)
-    pyautogui.press("enter")
-    time.sleep(0.5)
-    pyautogui.press("up")
-    time.sleep(0.5)
-    pyautogui.press("enter")
-    time.sleep(0.5)
-    pyautogui.click(positions["reduced_x"], positions["reduced_y"])
-    time.sleep(0.5)
-    pyautogui.click(positions["to_x"], positions["to_y"])
-    time.sleep(0.5)
-    pyperclip.copy(sentences["nemanja"])
-    pyautogui.hotkey("ctrl", "v")
-    time.sleep(0.5)
-    pyautogui.press("tab")
-    time.sleep(0.5)
-    pyautogui.press("tab")
-    time.sleep(0.5)
-    pyperclip.copy(sentences["sasa"])
-    pyautogui.hotkey("ctrl", "v")
-    time.sleep(0.5)
-    pyautogui.press("tab")
-    time.sleep(0.5)
-    pyautogui.press("tab")
-    time.sleep(0.5)
-    pyautogui.press("tab")
-    time.sleep(0.5)
-    pyperclip.copy(sentences["epdr_disabled_subject"])
-    pyautogui.hotkey("ctrl", "v")
-    time.sleep(0.5)
-    pyautogui.hotkey("ctrl", "tab")
-    time.sleep(0.5)
-    pyautogui.hotkey("ctrl", "c")
-    time.sleep(0.5)
-    pyautogui.hotkey("ctrl", "shift", "tab")
-    time.sleep(0.5)
-    pyautogui.hotkey("ctrl", "v")
-    pyautogui.click(1306, 946)
-
-
-def schedule_offline():
-    # print("scheduled offline report")
-    pyautogui.moveTo(572, 931)
-    time.sleep(1)
-    pyautogui.mouseDown()
-    time.sleep(0.2)
-    pyautogui.mouseUp()
-    time.sleep(0.5)
-    pyautogui.moveTo(647, 907)
-    time.sleep(1)
-    pyautogui.mouseDown()
-    time.sleep(0.2)
-    pyautogui.mouseUp()
-    time.sleep(2)
-    pyautogui.hotkey("ctrl", "a")
-    time.sleep(0.5)
-    pyperclip.copy(sentences["epdr_offline"])
-    pyautogui.hotkey("ctrl", "v")
-    time.sleep(0.5)
-    pyautogui.press("tab")
-    time.sleep(0.5)
-    pyautogui.press("tab")
-    time.sleep(0.5)
-    pyautogui.press("enter")
-    time.sleep(0.5)
-    pyautogui.press("up")
-    time.sleep(0.5)
-    pyautogui.press("enter")
-    time.sleep(0.5)
-    pyautogui.click(positions["reduced_x"], positions["reduced_y"])
-    time.sleep(0.5)
-    pyautogui.click(positions["to_x"], positions["to_y"])
-    time.sleep(0.5)
-    pyperclip.copy(sentences["nemanja"])
-    pyautogui.hotkey("ctrl", "v")
-    time.sleep(0.5)
-    pyautogui.press("tab")
-    time.sleep(0.5)
-    pyautogui.press("tab")
-    time.sleep(0.5)
-    pyperclip.copy(sentences["sasa"])
-    pyautogui.hotkey("ctrl", "v")
-    time.sleep(0.5)
-    pyautogui.press("tab")
-    time.sleep(0.5)
-    pyautogui.press("tab")
-    time.sleep(0.5)
-    pyautogui.press("tab")
-    time.sleep(0.5)
-    pyperclip.copy(sentences["epdr_offline_subject"])
-    pyautogui.hotkey("ctrl", "v")
-    time.sleep(0.5)
-    pyautogui.hotkey("ctrl", "tab")
-    time.sleep(0.5)
-    pyautogui.hotkey("ctrl", "c")
-    time.sleep(0.5)
-    pyautogui.hotkey("ctrl", "shift", "tab")
-    time.sleep(0.5)
-    pyautogui.hotkey("ctrl", "v")
-    pyautogui.click(1306, 946)
-
-
-def use_epdr_dialogue():
-    return pymsgbox.confirm(
-        text="Does the account use EPDR?", title="Confirmation", buttons=["Yes", "No"]
-    )
-
-
-def switch_epdr_account():
-    pyautogui.hotkey("ctrl", "c")
-    time.sleep(0.5)
-    pyautogui.hotkey("ctrl", "shift", "tab")
-    time.sleep(0.5)
-    pyautogui.hotkey("ctrl", "v")
-    time.sleep(1.5)
-    pyautogui.press("down")
-    time.sleep(0.5)
-    pyautogui.press("enter")
-    if use_epdr_dialogue() == "No":
-        time.sleep(0.5)
+# Switch chrome tab forward or backward
+def switch_chrome_tab(direction="forward"):
+    if direction == "forward":
         pyautogui.hotkey("ctrl", "tab")
-        time.sleep(0.5)
-        pyautogui.hotkey("ctrl", "shift", "-")
-        time.sleep(0.5)
-        pyautogui.press("down")
-        time.sleep(0.5)
-        pyautogui.press("down")
+    elif direction == "backward":
+        pyautogui.hotkey("ctrl", "shift", "tab")
+
+
+def copy_past_wait_tab(sentence):
+    sleep(SLEEP_NORMAL)
+    pyperclip.copy(sentences[sentence])
+    sleep(SLEEP_SHORT)
+    pyautogui.hotkey("ctrl", "v")
+    sleep(SLEEP_NORMAL)
+
+
+def wiggle_mouse():
+    while not wiggle_stop_event.is_set():
+        pyautogui.moveRel(0, 2)
+        sleep(SLEEP_SHORT)
+        pyautogui.moveRel(0, -2)
+
+
+def start_wiggle():
+    # Reset the stop event each time before starting
+    wiggle_stop_event.clear()
+    threading.Thread(target=wiggle_mouse, daemon=True).start()
+
+
+def stop_wiggle():
+    wiggle_stop_event.set()
+
+
+def smooth_scroll_down(total_scroll, steps, delay):
+    scroll_amount = -total_scroll // steps  # Negative for downward scroll
+    for _ in range(steps):
+        pyautogui.scroll(scroll_amount)
+        time.sleep(delay)
+
+
+def move_to_center(img_path1, img_path2, confidence=0.9):
+    location = pyautogui.locateCenterOnScreen(img_path1, confidence=confidence)
+    if not location:
+        location = pyautogui.locateCenterOnScreen(img_path2, confidence=confidence)
+
+    if location:
+        pyautogui.moveTo(location)
+        return True
     else:
-        time.sleep(0.5)
-        pyautogui.click(446, 286)
-        time.sleep(1)
-        pyautogui.moveTo(570, 438)
-        time.sleep(1)
-        pyautogui.mouseDown()
-        time.sleep(0.2)
-        pyautogui.mouseUp()
-        time.sleep(0.5)
-        pyautogui.moveTo(621, 454)
-        time.sleep(1)
-        pyautogui.mouseDown()
-        time.sleep(0.2)
-        pyautogui.mouseUp()
-        time.sleep(1)
-        pyperclip.copy(sentences["reports"])
-        pyautogui.hotkey("ctrl", "v")
-        time.sleep(0.5)
-        pyautogui.click(1303, 430)
-        time.sleep(0.5)
-        pyautogui.moveTo(571, 929)
-        time.sleep(1)
-        pyautogui.mouseDown()
-        time.sleep(0.2)
-        pyautogui.mouseUp()
-        time.sleep(0.5)
-        pyautogui.moveTo(627, 785)
-        time.sleep(1)
-        pyautogui.mouseDown()
-        time.sleep(0.2)
-        pyautogui.mouseUp()
-        time.sleep(0.5)
+        print("Neither image found on screen.")
+        return False
+
+
+def open_account():
+    pyautogui.hotkey("ctrl", "c")  # Copy Account Name from the excel sheet
+    sleep(SLEEP_SHORT)
+    switch_chrome_tab(CHROME_TAB_BACKWARD)  # Switch chrome tab to WG EPDR
+    sleep(SLEEP_SHORT)
+    pyautogui.click(
+        positions["search_account_form_x"], positions["serach_account_form_y"]
+    )  # Click on Search Account field
+    sleep(SLEEP_NORMAL)
+    pyautogui.hotkey("ctrl", "a")  # Select all (if any text is present in the field)
+    # Paste the copied text from the excel sheet to the account search form
+    pyautogui.hotkey("ctrl", "v")
+    sleep(SLEEP_VERY_LONG)
+    pyautogui.press("down")  # Select the first item from the dropdown list
+    pyautogui.press("enter")  # Enter the selected account
+    sleep(SLEEP_NORMAL)
+    pyautogui.moveTo(positions["computers_tab_x"], positions["computers_tab_y"])
+    sleep(SLEEP_NORMAL)
+    start_wiggle()
+    on_cursor_change(0.01, lambda: pyautogui.click())
+    stop_wiggle()
+    pyautogui.moveTo(
+        positions["reports_three_dots_x"], positions["reports_three_dots_y"]
+    )
+    sleep(
+        SLEEP_ULTRA_LONG
+    )  # There is currently no way to handle this than to wait a fixed amount of time
+    smooth_scroll_down(total_scroll=1000, steps=4, delay=0.01)
+    sleep(SLEEP_NORMAL)
+    if wait_for_program("../res/reports.png", "../res/reports2.png", timeout=10):
+        if move_to_center("../res/reports.png", "../res/reports2.png"):
+            print("Image found")
+            sleep(SLEEP_SHORT)
+            pyautogui.moveRel(200, 0)
+            sleep(SLEEP_NORMAL)
+            delicate_click()
+
+            # TEST
+            sleep(SLEEP_NORMAL)
+            switch_chrome_tab(CHROME_TAB_FORWARD)
+            sleep(SLEEP_NORMAL)
+            pyautogui.press("down")
+    else:
+        print("Cant locate image on screen, abort.....")
+        return

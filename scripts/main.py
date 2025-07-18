@@ -10,17 +10,11 @@ import pygetwindow as gw
 from commands.commands_paths_positions import path_commands, positions, shell_commands
 from config.configuration import cmd_position, icon_path, path
 from macro_functions import (
-    check_panda_svc,
     epdr_auto_download,
-    epdr_disabled_report,
     epdr_installing,
-    epdr_offline_report,
     find_site,
+    open_account,
     query_services,
-    schedule_disabled,
-    schedule_offline,
-    switch_epdr_account,
-    transfer_nss,
 )
 from start_lua import start_lua
 from tray import run_tray_icon
@@ -83,11 +77,7 @@ def close_program():
 
 # === MAIN SECOND KEYBOARD MACRO FUNCTIONALITY ===
 KEY_ACTIONS = {
-    "1": switch_epdr_account,
-    "2": epdr_disabled_report,
-    "3": epdr_offline_report,
-    "4": schedule_disabled,
-    "5": schedule_offline,
+    "1": open_account,
     "q": close_program,
     "w": lambda: epdr_installing(),
     "e": epdr_auto_download,
