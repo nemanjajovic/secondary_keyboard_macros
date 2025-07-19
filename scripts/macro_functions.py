@@ -78,6 +78,10 @@ sentences = {
     "settings": "Settings",
     "per_computer_settings": "Per-computer settings",
     "is_equal_to": "Is equal to",
+    "computer": "Computer",
+    "sha256": "Supports SHA-256 signed",
+    "false": "False",
+    "sha256_title": "SHA-256 Error",
 }
 
 positions = {
@@ -85,10 +89,10 @@ positions = {
     "serach_account_form_y": 280,
     "computers_tab_x": 450,
     "computers_tab_y": 280,
-    "filter_three_dots_x": 583,
-    "filter_three_dots_y": 439,
-    "reports_three_dots_x": 446,
-    "reports_three_dots_y": 438,
+    "filters_x": 450,
+    "filters_y": 388,
+    "rename_filter_x": 913,
+    "rename_filter_y": 372,
 }
 
 SLEEP_SHORT = 0.2
@@ -98,6 +102,9 @@ SLEEP_VERY_LONG = 1.2
 SLEEP_ULTRA_LONG = 2
 CHROME_TAB_FORWARD = "forward"
 CHROME_TAB_BACKWARD = "backward"
+
+reports_img_1 = "../res/reports.png"
+reports_img_2 = "../res/reports2.png"
 
 wiggle_stop_event = threading.Event()
 
@@ -129,6 +136,7 @@ def copy_past_wait_tab(sentence):
     sleep(SLEEP_SHORT)
     pyautogui.hotkey("ctrl", "v")
     sleep(SLEEP_NORMAL)
+    pyautogui.press("tab")
 
 
 def wiggle_mouse():
@@ -168,6 +176,54 @@ def move_to_center(img_path1, img_path2, confidence=0.9):
         return False
 
 
+def confirmation():
+    return pyautogui.confirm(
+        text="Confirmation", title="Confirmation", buttons=["Yes", "No", "Cancel"]
+    )
+
+
+def click_on_reports():
+    if wait_for_program(reports_img_1, reports_img_2, timeout=10):
+        if move_to_center(reports_img_1, reports_img_2):
+            print("Image found")
+            sleep(SLEEP_SHORT)
+            pyautogui.moveRel(200, 0)
+            sleep(SLEEP_NORMAL)
+            delicate_click()
+    else:
+        print("Reports image not found")
+        return
+
+
+def create_report(type):
+    click_on_reports()
+    if wait_for_program("../res/add_filter.png", "../res/add_filter2.png", timeout=10):
+        print("Add Filter image found")
+        move_to_center(
+            "../res/add_filter.png", "../res/add_filter2.png", confidence=0.9
+        )
+        # add_filter = pyautogui.locateCenterOnScreen("../res/add_filter.png")
+        # pyautogui.moveTo(add_filter)
+        delicate_click()
+        pyautogui.moveTo(positions["rename_filter_x"], positions["rename_filter_y"])
+        on_cursor_change(0.1, lambda: print("Add filter popup ready"))
+        if type == "EPDR Update disabled":
+            copy_past_wait_tab("epdr_update_disabled")
+            copy_past_wait_tab("settings")
+            copy_past_wait_tab("per_computer_settings")
+            copy_past_wait_tab("is_equal_to")
+            copy_past_wait_tab("epdr_update_disabled")
+        elif type == "SHA-256":
+            copy_past_wait_tab("sha256_title")
+            copy_past_wait_tab("computer")
+            copy_past_wait_tab("sha256")
+            copy_past_wait_tab("is_equal_to")
+            copy_past_wait_tab("false")
+
+    else:
+        print("Add Filter image not found")
+
+
 def open_account():
     pyautogui.hotkey("ctrl", "c")  # Copy Account Name from the excel sheet
     sleep(SLEEP_SHORT)
@@ -189,27 +245,15 @@ def open_account():
     start_wiggle()
     on_cursor_change(0.01, lambda: pyautogui.click())
     stop_wiggle()
-    pyautogui.moveTo(
-        positions["reports_three_dots_x"], positions["reports_three_dots_y"]
-    )
-    sleep(
-        SLEEP_ULTRA_LONG
-    )  # There is currently no way to handle this than to wait a fixed amount of time
-    smooth_scroll_down(total_scroll=1000, steps=4, delay=0.01)
-    sleep(SLEEP_NORMAL)
-    if wait_for_program("../res/reports.png", "../res/reports2.png", timeout=10):
-        if move_to_center("../res/reports.png", "../res/reports2.png"):
-            print("Image found")
-            sleep(SLEEP_SHORT)
-            pyautogui.moveRel(200, 0)
-            sleep(SLEEP_NORMAL)
-            delicate_click()
-
-            # TEST
-            sleep(SLEEP_NORMAL)
-            switch_chrome_tab(CHROME_TAB_FORWARD)
-            sleep(SLEEP_NORMAL)
-            pyautogui.press("down")
+    pyautogui.moveTo(positions["filters_x"], positions["filters_y"])
+    if wait_for_program("../res/filters.png", "../res/filters2.png", timeout=10):
+        smooth_scroll_down(total_scroll=1000, steps=4, delay=0.01)
+        sleep(SLEEP_NORMAL)
+        create_report()
+        sleep(SLEEP_NORMAL)
+        pyautogui.hotkey("ctrl", "tab")
+        sleep(SLEEP_NORMAL)
+        pyautogui.press("down")
     else:
-        print("Cant locate image on screen, abort.....")
+        print("Filters image not found")
         return

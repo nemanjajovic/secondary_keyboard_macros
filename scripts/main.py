@@ -10,6 +10,7 @@ import pygetwindow as gw
 from commands.commands_paths_positions import path_commands, positions, shell_commands
 from config.configuration import cmd_position, icon_path, path
 from macro_functions import (
+    create_report,
     epdr_auto_download,
     epdr_installing,
     find_site,
@@ -78,6 +79,8 @@ def close_program():
 # === MAIN SECOND KEYBOARD MACRO FUNCTIONALITY ===
 KEY_ACTIONS = {
     "1": open_account,
+    "2": lambda: create_report("SHA-256"),
+    "3": lambda: create_report("EPDR Update disabled"),
     "q": close_program,
     "w": lambda: epdr_installing(),
     "e": epdr_auto_download,
