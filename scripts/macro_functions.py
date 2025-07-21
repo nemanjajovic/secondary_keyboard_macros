@@ -82,6 +82,14 @@ sentences = {
     "sha256": "Supports SHA-256 signed",
     "false": "False",
     "sha256_title": "SHA-256 Error",
+    "workstations_and_servers": "Workstations and servers",
+    "default": "DEFAULT",
+    "default_title": "Default Settings Assigned",
+    "nemanja": "nemanja.jovic@ncrvoyix.com",
+    "sasa": "sasa.kozarcanin@ncrvoyix.com",
+    "epdr_schedule": "[EPDR Update Disabled] - ",
+    "sha256_schedule": "[EPDR SHA256 Errors] - ",
+    "default_schedule": "[EPDR Default Settings] - ",
 }
 
 positions = {
@@ -105,6 +113,7 @@ CHROME_TAB_BACKWARD = "backward"
 
 reports_img_1 = "../res/reports.png"
 reports_img_2 = "../res/reports2.png"
+reports_img_3 = "../res/reports3.png"
 
 wiggle_stop_event = threading.Event()
 
@@ -131,11 +140,11 @@ def switch_chrome_tab(direction="forward"):
 
 
 def copy_past_wait_tab(sentence):
-    sleep(SLEEP_NORMAL)
+    sleep(SLEEP_SHORT)
     pyperclip.copy(sentences[sentence])
     sleep(SLEEP_SHORT)
     pyautogui.hotkey("ctrl", "v")
-    sleep(SLEEP_NORMAL)
+    sleep(SLEEP_SHORT)
     pyautogui.press("tab")
 
 
@@ -163,10 +172,12 @@ def smooth_scroll_down(total_scroll, steps, delay):
         time.sleep(delay)
 
 
-def move_to_center(img_path1, img_path2, confidence=0.9):
+def move_to_center(img_path1=None, img_path2=None, img_path3=None, confidence=0.9):
     location = pyautogui.locateCenterOnScreen(img_path1, confidence=confidence)
     if not location:
         location = pyautogui.locateCenterOnScreen(img_path2, confidence=confidence)
+        if not location:
+            location = pyautogui.locateCenterOnScreen(img_path3, confidence=confidence)
 
     if location:
         pyautogui.moveTo(location)
@@ -183,8 +194,8 @@ def confirmation():
 
 
 def click_on_reports():
-    if wait_for_program(reports_img_1, reports_img_2, timeout=10):
-        if move_to_center(reports_img_1, reports_img_2):
+    if wait_for_program(reports_img_1, reports_img_2, reports_img_3, timeout=10):
+        if move_to_center(reports_img_1, reports_img_2, reports_img_3):
             print("Image found")
             sleep(SLEEP_SHORT)
             pyautogui.moveRel(200, 0)
@@ -195,15 +206,21 @@ def click_on_reports():
         return
 
 
-def create_report(type):
+def create_filter(type):
     click_on_reports()
-    if wait_for_program("../res/add_filter.png", "../res/add_filter2.png", timeout=10):
+    if wait_for_program(
+        "../res/add_filter.png",
+        "../res/add_filter2.png",
+        "../res/add_filter2.png",
+        timeout=10,
+    ):
         print("Add Filter image found")
         move_to_center(
-            "../res/add_filter.png", "../res/add_filter2.png", confidence=0.9
+            "../res/add_filter.png",
+            "../res/add_filter2.png",
+            "../res/add_filter2.png",
+            confidence=0.9,
         )
-        # add_filter = pyautogui.locateCenterOnScreen("../res/add_filter.png")
-        # pyautogui.moveTo(add_filter)
         delicate_click()
         pyautogui.moveTo(positions["rename_filter_x"], positions["rename_filter_y"])
         on_cursor_change(0.1, lambda: print("Add filter popup ready"))
@@ -213,15 +230,132 @@ def create_report(type):
             copy_past_wait_tab("per_computer_settings")
             copy_past_wait_tab("is_equal_to")
             copy_past_wait_tab("epdr_update_disabled")
+            pyautogui.click(1477, 770)
         elif type == "SHA-256":
             copy_past_wait_tab("sha256_title")
             copy_past_wait_tab("computer")
             copy_past_wait_tab("sha256")
             copy_past_wait_tab("is_equal_to")
             copy_past_wait_tab("false")
+            pyautogui.click(1477, 770)
+        elif type == "Default settings":
+            copy_past_wait_tab("default_title")
+            copy_past_wait_tab("settings")
+            copy_past_wait_tab("workstations_and_servers")
+            copy_past_wait_tab("is_equal_to")
+            copy_past_wait_tab("default")
+            pyautogui.click(1477, 770)
 
     else:
         print("Add Filter image not found")
+
+
+def populate_schedule(type, subject):
+    sleep(SLEEP_NORMAL)
+    pyautogui.hotkey("ctrl", "a")
+    sleep(SLEEP_SHORT)
+    pyperclip.copy(sentences[type])
+    pyautogui.hotkey("ctrl", "v")
+    sleep(SLEEP_NORMAL)
+    pyautogui.press("tab")
+    sleep(SLEEP_SHORT)
+    pyautogui.press("tab")
+    sleep(SLEEP_SHORT)
+    pyautogui.press("enter")
+    sleep(SLEEP_SHORT)
+    pyautogui.press("up")
+    sleep(SLEEP_SHORT)
+    pyautogui.press("enter")
+    sleep(SLEEP_SHORT)
+    pyautogui.click(957, 706)
+    sleep(SLEEP_SHORT)
+    pyautogui.click(963, 779)
+    pyperclip.copy(sentences["nemanja"])
+    pyautogui.hotkey("ctrl", "v")
+    sleep(SLEEP_SHORT)
+    pyautogui.press("tab")
+    sleep(SLEEP_SHORT)
+    pyautogui.press("tab")
+    sleep(SLEEP_SHORT)
+    pyperclip.copy(sentences["sasa"])
+    pyautogui.hotkey("ctrl", "v")
+    sleep(SLEEP_SHORT)
+    pyautogui.press("tab")
+    sleep(SLEEP_SHORT)
+    pyautogui.press("tab")
+    sleep(SLEEP_SHORT)
+    pyautogui.press("tab")
+    if subject == "epdr_schedule":
+        pyperclip.copy(sentences["epdr_schedule"])
+        pyautogui.hotkey("ctrl", "v")
+        sleep(SLEEP_SHORT)
+        switch_chrome_tab("forward")
+        sleep(SLEEP_SHORT)
+        pyautogui.hotkey("ctrl", "c")
+        sleep(SLEEP_SHORT)
+        switch_chrome_tab("backward")
+        sleep(SLEEP_SHORT)
+        pyautogui.hotkey("ctrl", "v")
+        sleep(SLEEP_SHORT)
+        pyautogui.click(1304, 945)
+    elif subject == "sha256_schedule":
+        pyperclip.copy(sentences["sha256_schedule"])
+        pyautogui.hotkey("ctrl", "v")
+        sleep(SLEEP_SHORT)
+        switch_chrome_tab("forward")
+        sleep(SLEEP_SHORT)
+        pyautogui.hotkey("ctrl", "c")
+        sleep(SLEEP_SHORT)
+        switch_chrome_tab("backward")
+        sleep(SLEEP_SHORT)
+        pyautogui.hotkey("ctrl", "v")
+        sleep(SLEEP_SHORT)
+        pyautogui.click(1304, 945)
+    elif subject == "default_schedule":
+        pyperclip.copy(sentences["default_schedule"])
+        pyautogui.hotkey("ctrl", "v")
+        sleep(SLEEP_SHORT)
+        switch_chrome_tab("forward")
+        sleep(SLEEP_SHORT)
+        pyautogui.hotkey("ctrl", "c")
+        sleep(SLEEP_SHORT)
+        switch_chrome_tab("backward")
+        sleep(SLEEP_SHORT)
+        pyautogui.hotkey("ctrl", "v")
+        sleep(SLEEP_SHORT)
+        pyautogui.click(1304, 945)
+
+
+def create_schedule(type, offset):
+    if wait_for_program(reports_img_1, reports_img_2, reports_img_3, timeout=10):
+        if move_to_center(reports_img_1, reports_img_2, reports_img_3):
+            print("Reports image found")
+            if type == "EPDR Update disabled":
+                pyautogui.moveRel(195, offset)
+                sleep(SLEEP_NORMAL)
+                delicate_click()
+                pyautogui.moveRel(129, -25)
+                sleep(SLEEP_NORMAL)
+                delicate_click()
+                populate_schedule("epdr_update_disabled", "epdr_schedule")
+            elif type == "SHA-256":
+                pyautogui.moveRel(195, offset)
+                sleep(SLEEP_NORMAL)
+                delicate_click()
+                pyautogui.moveRel(129, -25)
+                sleep(SLEEP_NORMAL)
+                delicate_click()
+                populate_schedule("sha256_title", "sha256_schedule")
+            elif type == "Default settings":
+                pyautogui.moveRel(195, offset)
+                sleep(SLEEP_NORMAL)
+                delicate_click()
+                pyautogui.moveRel(129, -25)
+                sleep(SLEEP_NORMAL)
+                delicate_click()
+                populate_schedule("default_title", "default_schedule")
+    else:
+        print("Reports image not found")
 
 
 def open_account():
@@ -246,14 +380,27 @@ def open_account():
     on_cursor_change(0.01, lambda: pyautogui.click())
     stop_wiggle()
     pyautogui.moveTo(positions["filters_x"], positions["filters_y"])
-    if wait_for_program("../res/filters.png", "../res/filters2.png", timeout=10):
+    if wait_for_program(
+        "../res/filters.png", "../res/filters2.png", "../res/filters2.png", timeout=10
+    ):
         smooth_scroll_down(total_scroll=1000, steps=4, delay=0.01)
         sleep(SLEEP_NORMAL)
-        create_report()
-        sleep(SLEEP_NORMAL)
-        pyautogui.hotkey("ctrl", "tab")
-        sleep(SLEEP_NORMAL)
-        pyautogui.press("down")
     else:
         print("Filters image not found")
         return
+
+
+def run():
+    # open_account()
+    # sleep(SLEEP_LONG)
+    create_filter("EPDR Update disabled")
+    sleep(SLEEP_LONG)
+    create_filter("SHA-256")
+    sleep(SLEEP_LONG)
+    create_filter("Default settings")
+    sleep(SLEEP_LONG)
+    create_schedule("EPDR Update disabled", 105)
+    sleep(SLEEP_VERY_LONG)
+    create_schedule("SHA-256", 138)
+    sleep(SLEEP_VERY_LONG)
+    create_schedule("Default settings", 171)

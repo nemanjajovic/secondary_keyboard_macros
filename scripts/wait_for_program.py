@@ -9,12 +9,16 @@ def is_present(img_path, confidence=0.9):
 
 # This function accepts 2 image file paths
 def wait_for_program(
-    img_path1, img_path2, timeout=30, scan_frequency=1.0, confidence=0.9
+    img_path1, img_path2, img_path3, timeout=30, scan_frequency=1.0, confidence=0.9
 ):
     time_start = time.time()
 
     while True:
-        if is_present(img_path1, confidence) or is_present(img_path2, confidence):
+        if (
+            is_present(img_path1, confidence)
+            or is_present(img_path2, confidence)
+            or is_present(img_path3, confidence)
+        ):
             return True
         if time.time() - time_start > timeout:
             return False

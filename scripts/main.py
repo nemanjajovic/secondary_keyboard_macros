@@ -10,12 +10,16 @@ import pygetwindow as gw
 from commands.commands_paths_positions import path_commands, positions, shell_commands
 from config.configuration import cmd_position, icon_path, path
 from macro_functions import (
-    create_report,
+    click_on_reports,
+    create_filter,
+    create_schedule,
     epdr_auto_download,
     epdr_installing,
     find_site,
     open_account,
     query_services,
+    run,
+    switch_chrome_tab,
 )
 from start_lua import start_lua
 from tray import run_tray_icon
@@ -79,8 +83,15 @@ def close_program():
 # === MAIN SECOND KEYBOARD MACRO FUNCTIONALITY ===
 KEY_ACTIONS = {
     "1": open_account,
-    "2": lambda: create_report("SHA-256"),
-    "3": lambda: create_report("EPDR Update disabled"),
+    "2": lambda: create_filter("EPDR Update disabled"),
+    "3": lambda: create_filter("SHA-256"),
+    "4": lambda: create_filter("Default settings"),
+    "5": lambda: create_schedule("EPDR Update disabled", 105),
+    "6": lambda: create_schedule("SHA-256", 138),
+    "7": lambda: create_schedule("Default settings", 171),
+    "8": lambda: switch_chrome_tab("forward"),
+    "9": click_on_reports,
+    "0": run,
     "q": close_program,
     "w": lambda: epdr_installing(),
     "e": epdr_auto_download,
