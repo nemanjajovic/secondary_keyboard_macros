@@ -7,6 +7,7 @@ from tkinter import simpledialog
 import keyboard
 import pyautogui
 import pygetwindow as gw
+import pyperclip
 from commands.commands_paths_positions import path_commands, positions, shell_commands
 from config.configuration import cmd_position, icon_path, path
 from macro_functions import (
@@ -53,7 +54,9 @@ def execute_command(command):
     elif command in shell_commands:
         pyautogui.click(*cmd_position)
         time.sleep(0.2)
-        pyautogui.write(shell_commands[command])
+        pyperclip.copy(shell_commands[command])
+        time.sleep(0.4)
+        pyautogui.hotkey("ctrl", "v")
         print(f"Executed: {shell_commands[command]}")
         pyautogui.moveTo(current_position)
     else:

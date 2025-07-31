@@ -23,9 +23,15 @@ path_commands = {
 
 # Add commands here that you want to type in CMD of CMC
 shell_commands = {
+    "psrepair": r"""IF EXIST "C:\Program Files\Panda Security\Panda Aether Agent\Additional files\PSInfo.exe" (
+        "C:\Program Files\Panda Security\Panda Aether Agent\Additional files\PSInfo.exe" -d:"[AETHERUPDATE FULL]" -repair /nogui
+    ) ELSE (
+        "C:\Program Files (x86)\Panda Security\Panda Aether Agent\Additional files\PSInfo.exe" -d:"[AETHERUPDATE FULL]" -repair /nogui
+    )""",
+    "ps": r"""IF EXIST "C:\Program Files\Panda Security\Panda Aether Agent\Additional files\PSInfo.exe" ("C:\Program Files\Panda Security\Panda Aether Agent\Additional files\PSInfo.exe" -d:"[AETHERUPDATE FULL]" /nogui) ELSE ("C:\Program Files (x86)\Panda Security\Panda Aether Agent\Additional files\PSInfo.exe" -d:"[AETHERUPDATE FULL]" /nogui)""",
     "vncenablefs": r'''powershell -Command "$path='C:\\Program Files\\NCR\\CMC\\pvnc.ini'; $content=Get-Content $path; $adminFound=$false; $inserted=$false; $newContent=@(); foreach ($line in $content) { if ($line -match '^\[admin\]$') { $adminFound=$true; $newContent+= $line; continue }; if ($adminFound -and $line -match '^FileTransferEnabled\s*=\s*0$') { $newContent+= 'FileTransferEnabled=1'; $inserted=$true; continue }; if ($adminFound -and $line -match '^FileTransferEnabled\s*=\s*1$') { $inserted=$true }; $newContent+= $line }; if ($adminFound -and -not $inserted) { $updatedContent=@(); foreach ($line in $newContent) { $updatedContent+= $line; if ($line -match '^\[admin\]$') { $updatedContent+= 'FileTransferEnabled=1' } }; Set-Content $path -Value $updatedContent } else { Set-Content $path -Value $newContent }"''',
     "vncdisablefs": r'''powershell -Command "$path='C:\\Program Files\\NCR\\CMC\\pvnc.ini'; $content=Get-Content $path; $adminFound=$false; $inserted=$false; $newContent=@(); foreach ($line in $content) { if ($line -match '^\[admin\]$') { $adminFound=$true; $newContent+= $line; continue }; if ($adminFound -and $line -match '^FileTransferEnabled\s*=\s*1$') { $newContent+= 'FileTransferEnabled=0'; $inserted=$true; continue }; if ($adminFound -and $line -match '^FileTransferEnabled\s*=\s*0$') { $inserted=$true }; $newContent+= $line }; if ($adminFound -and -not $inserted) { $updatedContent=@(); foreach ($line in $newContent) { $updatedContent+= $line; if ($line -match '^\[admin\]$') { $updatedContent+= 'FileTransferEnabled=0' } }; Set-Content $path -Value $updatedContent } else { Set-Content $path -Value $newContent }"''',
-    "pps": 'C:\\temp\\nss\\psinfo.exe -d:"[AETHERUPDATE FULL]" /nogui',
+    "ppstemp": 'C:\\temp\\nss\\psinfo.exe -d:"[AETHERUPDATE FULL]" /nogui',
     "pendpoint": "c:\\temp\\nss\\EndpointAgentTool.exe /cfg /su /s /d /c /ku",
     "psetproxy": "c:\\temp\\nss\\setproxyallusers.bat ",
     "pcertinst": "C:\\Temp\\nss\\CertCheck\\CertCheck /add /ca && C:\\Temp\\nss\\CertCheck\\WESCertcheck /add /ca",
@@ -41,7 +47,7 @@ shell_commands = {
     "arp": "arp -a",
     "certinst": "C:\\Temp\\CertCheck\\CertCheck /add /ca && C:\\Temp\\CertCheck\\WESCertcheck /add /ca",
     "lpinst": "%IBERDIR%\\LANProxy\\LANProxy\\InstallLANProxy.bat",
-    "ps": 'C:\\temp\\psinfo.exe -d:"[AETHERUPDATE FULL]" /nogui',
+    "pstemp": 'C:\\temp\\psinfo.exe -d:"[AETHERUPDATE FULL]" /nogui',
     "tls": "c:\\temp\\tlsfix.exe",
     "lpremove": 'taskkill /f /im lanproxy.exe && sc config lanproxy start= disabled && sc delete lanproxy & rmdir /s /q "%LOCALDIR%\\EPS" & rmdir /s /q "%LOCALDIR%\\LANProxy"',
     "host": "hostname",
