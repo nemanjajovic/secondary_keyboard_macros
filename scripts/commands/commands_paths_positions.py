@@ -25,11 +25,7 @@ path_commands = {
 # Add commands here that you want to type in CMD of CMC
 shell_commands = {
     "tls": "C:\\temp\\TLSEnable.bat",
-    "psrepair": r"""IF EXIST "C:\\Program Files\\Panda Security\\Panda Aether Agent\\Additional files\\PSInfo.exe" (
-        "C:\\Program Files\\Panda Security\\Panda Aether Agent\\Additional files\\PSInfo.exe" -d:"[AETHERUPDATE FULL]" -repair /nogui
-    ) ELSE (
-        "C:\\Program Files (x86)\\Panda Security\\Panda Aether Agent\\Additional files\\PSInfo.exe" -d:"[AETHERUPDATE FULL]" -repair /nogui
-    )""",
+    "psrepair": r"""IF EXIST "C:\\Program Files\\Panda Security\\Panda Aether Agent\\Additional files\\PSInfo.exe" ("C:\\Program Files\\Panda Security\\Panda Aether Agent\\Additional files\\PSInfo.exe" -d:"[AETHERUPDATE FULL]" -repair /nogui) ELSE ("C:\\Program Files (x86)\\Panda Security\\Panda Aether Agent\\Additional files\\PSInfo.exe" -d:"[AETHERUPDATE FULL]" -repair /nogui)""",
     "reboot": "shutdown.exe -r -f -t 03",
     "ps": r"""IF EXIST "C:\\Program Files\\Panda Security\\Panda Aether Agent\\Additional files\\PSInfo.exe" ("C:\\Program Files\\Panda Security\\Panda Aether Agent\\Additional files\\PSInfo.exe" -d:"[AETHERUPDATE FULL]" /nogui) ELSE ("C:\\Program Files (x86)\\Panda Security\\Panda Aether Agent\\Additional files\\PSInfo.exe" -d:"[AETHERUPDATE FULL]" /nogui)""",
     "vncenablefs": r'''powershell -Command "$path='C:\\Program Files\\NCR\\CMC\\pvnc.ini'; $content=Get-Content $path; $adminFound=$false; $inserted=$false; $newContent=@(); foreach ($line in $content) { if ($line -match '^\[admin\]$') { $adminFound=$true; $newContent+= $line; continue }; if ($adminFound -and $line -match '^FileTransferEnabled\s*=\s*0$') { $newContent+= 'FileTransferEnabled=1'; $inserted=$true; continue }; if ($adminFound -and $line -match '^FileTransferEnabled\s*=\s*1$') { $inserted=$true }; $newContent+= $line }; if ($adminFound -and -not $inserted) { $updatedContent=@(); foreach ($line in $newContent) { $updatedContent+= $line; if ($line -match '^\[admin\]$') { $updatedContent+= 'FileTransferEnabled=1' } }; Set-Content $path -Value $updatedContent } else { Set-Content $path -Value $newContent }"''',
@@ -51,7 +47,7 @@ shell_commands = {
     "certinst": "C:\\Temp\\CertCheck\\CertCheck /add /ca && C:\\Temp\\CertCheck\\WESCertcheck /add /ca",
     "lpinst": "%IBERDIR%\\LANProxy\\LANProxy\\InstallLANProxy.bat",
     "pstemp": 'C:\\temp\\psinfo.exe -d:"[AETHERUPDATE FULL]" /nogui',
-    "tls": "c:\\temp\\tlsfix.exe",
+    "tlsfix": "c:\\temp\\tlsfix.exe",
     "lpremove": 'taskkill /f /im lanproxy.exe && sc config lanproxy start= disabled && sc delete lanproxy & rmdir /s /q "%LOCALDIR%\\EPS" & rmdir /s /q "%LOCALDIR%\\LANProxy"',
     "host": "hostname",
     "restart panda": "net stop PandaAetherAgent && net start PandaAetherAgent",
