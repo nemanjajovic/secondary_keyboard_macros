@@ -24,6 +24,8 @@ path_commands = {
 
 # Add commands here that you want to type in CMD of CMC
 shell_commands = {
+    "restartpanda1": "tasklist /svc | findstr PandaAetherAgent",
+    "restartpanda2": "taskkill /f /pid ",
     "tls": "C:\\temp\\TLSEnable.bat",
     "psrepair": r"""IF EXIST "C:\\Program Files\\Panda Security\\Panda Aether Agent\\Additional files\\PSInfo.exe" ("C:\\Program Files\\Panda Security\\Panda Aether Agent\\Additional files\\PSInfo.exe" -d:"[AETHERUPDATE FULL]" -repair /nogui) ELSE ("C:\\Program Files (x86)\\Panda Security\\Panda Aether Agent\\Additional files\\PSInfo.exe" -d:"[AETHERUPDATE FULL]" -repair /nogui)""",
     "reboot": "shutdown.exe -r -f -t 03",
