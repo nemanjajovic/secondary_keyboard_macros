@@ -66,4 +66,7 @@ shell_commands = {
     "proxy32term": "c:\\temp\\NSSProxySetup_32bit.exe -device_type=term -host=ALOHABOH -port=9180 -fallback_ip=",
     "proxy64term": "c:\\temp\\NSSProxySetup_64bit.exe -device_type=term -host=ALOHABOH -port=9180 -fallback_ip=",
     "proxy64boh": "c:\\temp\\NSSProxySetup_64bit.exe -device_type=boh -port=9180 -offline",
+    "ldremove1": '"%programfiles%\\landesk\\ldclient\\vulscan.exe" /removehips /rebootaction=never',
+    "ldremove2": "c:\\temp\\UninstallWinClient20173.exe /forceclean /noreboot",
+    "getkeyname": "sc getkeyname ",
 }
