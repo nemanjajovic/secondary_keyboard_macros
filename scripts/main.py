@@ -11,6 +11,7 @@ import pyperclip
 from commands.commands_paths_positions import path_commands, positions, shell_commands
 from config.configuration import cmd_position, icon_path, path
 from macro_functions import (
+    check_panda_svc,
     click_on_reports,
     create_filter,
     create_schedule,
@@ -113,6 +114,7 @@ KEY_ACTIONS = {
     "s": query_services,
     "d": lambda: print("D"),
     "f": find_site,
+    "y": lambda: check_panda_svc(),
 }
 
 

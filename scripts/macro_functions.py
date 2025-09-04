@@ -16,8 +16,6 @@ def check_panda_svc():
     pyautogui.doubleClick()  # Double clicks on service query
     time.sleep(0.1)
     pyautogui.press("p")  # Move to services starting with P
-    time.sleep(0.5)
-    pyautogui.press("esc")  # Exit services query after 0.5 seconds
     pyautogui.moveRel(0, -24)  # Move up 24 pixels relative to current mouse position
     print("Service query finished.")
 
