@@ -142,11 +142,21 @@ def ctrl_f_listener():
             print("Target window not active")
 
 
+def up_listener():
+    while True:
+        keyboard.wait("up")
+        if is_target_window_active():
+            check_panda_svc()
+        else:
+            print("Target window not active")
+
+
 # === RUNTIME ===
 if __name__ == "__main__":
-    start_lua()
-    keyboard.on_press(on_f24)
+    # start_lua()
+    # keyboard.on_press(on_f24)
     threading.Thread(target=ctrl_f_listener, daemon=True).start()
+    threading.Thread(target=up_listener, daemon=True).start()
     threading.Thread(
         target=run_tray_icon(icon_path, close_program), daemon=True
     ).start()
